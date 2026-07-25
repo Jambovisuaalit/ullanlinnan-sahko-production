@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_SITE_URL: https://preview.invalid
+      CONTACT_FORM_WEBHOOK_URL: https://preview.invalid/contact
+      ALLOW_MISSING_BRAND_ASSETS: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm install --no-fund
+      - name: Validate and typecheck
+        run: npm run check
+      - name: Build preview artifact
+        run: npm run build:ci
