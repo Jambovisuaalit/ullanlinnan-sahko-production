@@ -7,8 +7,7 @@ const requiredAlways = [
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg",
   "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico",
   "public/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png",
-  "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png",
-  "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_512X512.png"
+  "public/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_PNG_192X192.png"
 ];
 const productionOnly = ["public/brand/icons/USOY_ICON_SPRITE.svg"];
 
