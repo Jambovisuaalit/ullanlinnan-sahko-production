@@ -1,0 +1,27 @@
+name: Virheraportti
+description: Raportoi toistettava tekninen tai käyttöliittymävirhe
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Virhe
+      description: Mitä tapahtui ja mitä piti tapahtua?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Toistamisvaiheet
+      placeholder: "1. Avaa...\n2. Valitse...\n3. Havaitse..."
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL tai reitti
+  - type: input
+    id: environment
+    attributes:
+      label: Selain ja laite
