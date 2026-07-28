@@ -1,0 +1,74 @@
+/* UI/UX refinement pass V04: structural navigation fix and desktop header balance. */
+
+.site-header {
+  z-index: 70;
+}
+
+.nav-dropdown[data-state="open"] > button {
+  background: rgb(26 26 26 / 4%);
+}
+
+@media (min-width: 68rem) {
+  .site-header__row {
+    min-height: 4.75rem;
+  }
+
+  .desktop-nav {
+    gap: clamp(0.875rem, 1.2vw, 1.35rem);
+  }
+
+  .desktop-nav > a,
+  .nav-dropdown > button {
+    min-height: 2.875rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .nav-dropdown__panel {
+    top: calc(100% + 0.25rem);
+    right: auto;
+    left: 0;
+    width: min(20.5rem, calc(100vw - (2 * var(--page-margin))));
+    padding: 0.375rem;
+    border: 1px solid rgb(26 26 26 / 18%);
+    border-top: 2px solid var(--color-brand-gold);
+    background: var(--color-brand-paper);
+    box-shadow: 0 1rem 2.5rem rgb(26 26 26 / 15%);
+    transform-origin: top left;
+  }
+
+  .nav-dropdown__panel a {
+    min-height: 3rem;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+
+  .header-cta {
+    margin-left: 0.25rem;
+    padding-inline: 1.1rem;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 80rem) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 5.25fr) minmax(0, 6.75fr);
+  }
+
+  .hero-copy {
+    padding-right: clamp(0rem, 1.5vw, 1.5rem);
+  }
+}
+
+@media (max-width: 67.99rem) {
+  .site-header__row {
+    min-height: 4.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown__panel {
+    animation: none;
+  }
+}
