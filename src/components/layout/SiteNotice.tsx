@@ -7,7 +7,10 @@ export function SiteNotice() {
       <div className="container site-notice__row">
         <span>
           <Icon name="clock" />
-          Myymälä avoinna {company.openingHours.display.toLowerCase()}
+          <span className="site-notice__mobile-copy">Avoinna ke 10–17</span>
+          <span className="site-notice__desktop-copy">
+            Myymälä avoinna {company.openingHours.display.toLowerCase()}
+          </span>
         </span>
         <span>
           <Icon name="pin" />
