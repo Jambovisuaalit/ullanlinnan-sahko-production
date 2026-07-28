@@ -118,6 +118,11 @@
   flex: 0 0 auto;
 }
 
+.service-card {
+  position: relative;
+  overflow: hidden;
+}
+
 @media (max-width: 41.99rem) {
   .priority-service-links__grid {
     grid-template-columns: 1fr;

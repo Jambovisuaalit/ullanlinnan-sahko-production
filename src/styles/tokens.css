@@ -59,7 +59,7 @@
   --grid-gutter: 1rem;
   --section-space: 4rem;
   --card-padding: 1.25rem;
-  --header-main-height: 4rem;
+  --header-main-height: 4.25rem;
   --header-notice-height: 2rem;
   --mobile-action-height: 4rem;
   --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -75,6 +75,7 @@
   --duration-default: 200ms;
   --easing-standard: cubic-bezier(0.2, 0, 0, 1);
 }
+
 @media (min-width: 48rem) {
   :root {
     --page-margin: 2rem;
@@ -86,9 +87,14 @@
     --header-notice-height: 2.5rem;
   }
 }
+
 @media (min-width: 64rem) {
-  :root { --page-margin: 2.5rem; --grid-columns: 8; }
+  :root {
+    --page-margin: 2.5rem;
+    --grid-columns: 8;
+  }
 }
+
 @media (min-width: 80rem) {
   :root {
     --page-margin: 3rem;
@@ -96,6 +102,6 @@
     --grid-gutter: 2rem;
     --section-space: 6rem;
     --card-padding: 2rem;
-    --header-main-height: 5rem;
+    --header-main-height: 4.75rem;
   }
 }
