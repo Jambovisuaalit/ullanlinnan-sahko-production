@@ -1,0 +1,329 @@
+/* UI/UX refinement pass V03: navigation reliability, hierarchy and interaction polish. */
+
+[hidden] {
+  display: none !important;
+}
+
+.site-header {
+  isolation: isolate;
+  box-shadow: 0 1px 0 rgb(26 26 26 / 4%);
+}
+
+.desktop-nav > a,
+.nav-dropdown > button {
+  position: relative;
+  padding-inline: 0.25rem;
+  cursor: pointer;
+}
+
+.desktop-nav > a::after,
+.nav-dropdown > button::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  scale: 0 1;
+  transform-origin: left;
+  background: var(--color-brand-gold);
+  transition: scale var(--duration-default) var(--easing-standard);
+}
+
+.desktop-nav > a:hover::after,
+.desktop-nav > a:focus-visible::after,
+.nav-dropdown > button:hover::after,
+.nav-dropdown > button:focus-visible::after,
+.desktop-nav > a[aria-current="page"]::after,
+.nav-dropdown > button[data-active="true"]::after,
+.nav-dropdown > button[aria-expanded="true"]::after {
+  scale: 1 1;
+}
+
+.desktop-nav > a[aria-current="page"],
+.nav-dropdown > button[data-active="true"] {
+  box-shadow: none;
+}
+
+.nav-dropdown > button svg {
+  transition: rotate var(--duration-default) var(--easing-standard);
+}
+
+.nav-dropdown > button[aria-expanded="true"] svg {
+  rotate: 180deg;
+}
+
+.nav-dropdown__panel {
+  z-index: 20;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  left: auto;
+  width: min(22rem, calc(100vw - 2rem));
+  translate: none;
+  gap: 0;
+  padding: 0.5rem;
+  border-color: rgb(26 26 26 / 18%);
+  background: rgb(251 249 245 / 99%);
+  box-shadow: 0 1.25rem 3rem rgb(26 26 26 / 16%);
+  transform-origin: top right;
+}
+
+.nav-dropdown__panel:not([hidden]) {
+  display: grid;
+  animation: nav-panel-in 150ms var(--easing-standard);
+}
+
+.nav-dropdown__panel a {
+  min-height: 3.25rem;
+  padding: 0.75rem 0.875rem;
+  border: 0;
+  border-bottom: 1px solid var(--color-border-soft);
+  border-radius: 0;
+  font-weight: 720;
+}
+
+.nav-dropdown__panel a:last-child {
+  border-bottom: 0;
+}
+
+.nav-dropdown__panel a:hover,
+.nav-dropdown__panel a:focus-visible,
+.nav-dropdown__panel a[aria-current="page"] {
+  border-left-color: transparent;
+  background: var(--color-bg-secondary);
+  box-shadow: inset 3px 0 var(--color-brand-gold);
+  text-decoration: none;
+}
+
+@keyframes nav-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.35rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mobile-drawer-layer {
+  animation: drawer-layer-in 160ms var(--easing-standard);
+}
+
+.mobile-drawer {
+  border-left: 1px solid var(--color-border-soft);
+}
+
+.mobile-drawer nav a {
+  padding-inline: 0.5rem;
+}
+
+@keyframes drawer-layer-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hero-section {
+  padding-block: clamp(3rem, 5vw, 5.25rem);
+}
+
+.hero-media .media-frame {
+  min-height: clamp(24rem, 46vw, 34rem);
+}
+
+.hero-info-card {
+  border-color: rgb(251 249 245 / 20%);
+  background: var(--color-brand-black);
+  color: var(--color-brand-paper);
+  box-shadow: 0 1.25rem 2.75rem rgb(26 26 26 / 22%);
+}
+
+.hero-info-card > span:first-child {
+  color: var(--color-brand-gold);
+}
+
+.hero-info-card a {
+  width: fit-content;
+  font-weight: 750;
+  text-underline-offset: 0.25rem;
+}
+
+.feature-copy > .button {
+  width: auto;
+  justify-self: start;
+}
+
+.service-card {
+  position: relative;
+  min-height: 18rem;
+  overflow: hidden;
+}
+
+.service-card:focus-within {
+  border-color: var(--color-brand-black);
+  box-shadow: var(--shadow-default);
+  translate: 0 -2px;
+}
+
+.service-card h3 {
+  max-width: 18ch;
+}
+
+.service-card .arrow-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.service-shortcuts > a {
+  padding-inline: 1rem;
+  transition: background-color var(--duration-default) var(--easing-standard), padding-inline var(--duration-default) var(--easing-standard);
+}
+
+.service-shortcuts > a:hover,
+.service-shortcuts > a:focus-visible {
+  padding-inline: 1.25rem;
+  background: var(--color-surface);
+  text-decoration: none;
+}
+
+.media-brand-panel {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.media-brand-panel::before {
+  inset: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.media-brand-panel__icon {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.media-brand-panel strong {
+  font-size: clamp(1.55rem, 2.6vw, 2.65rem);
+}
+
+.accordion {
+  border-top: 1px solid var(--color-border);
+}
+
+.accordion__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.accordion__item h3 {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.accordion__item button {
+  width: 100%;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion__item button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  transition: rotate var(--duration-default) var(--easing-standard);
+}
+
+.accordion__item.is-open button svg {
+  rotate: 180deg;
+}
+
+.accordion__item button:hover span {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.accordion__panel {
+  max-width: var(--container-text-max);
+  padding: 0 2.5rem var(--space-5) 0;
+  color: var(--color-text-secondary);
+}
+
+.contact-card {
+  border: 1px solid rgb(251 249 245 / 18%);
+  box-shadow: 0 1.5rem 3.5rem rgb(0 0 0 / 24%);
+}
+
+.field input,
+.field textarea,
+.field select {
+  transition: border-color var(--duration-default) var(--easing-standard), box-shadow var(--duration-default) var(--easing-standard), background-color var(--duration-default) var(--easing-standard);
+}
+
+.field input:hover,
+.field textarea:hover,
+.field select:hover {
+  border-color: var(--color-brand-black);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--color-brand-black);
+  box-shadow: 0 0 0 1px var(--color-brand-black);
+}
+
+@media (min-width: 64rem) {
+  .hero-info-card {
+    right: 1rem;
+    bottom: 1rem;
+    width: min(18.5rem, calc(100% - 2rem));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .site-notice__row {
+    gap: var(--space-3);
+  }
+
+  .site-notice__row > span:first-child {
+    min-width: 0;
+    font-size: 0.75rem;
+  }
+
+  .site-notice__row > a {
+    margin-left: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 35rem) {
+  .feature-copy > .button {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .hero-media .media-frame {
+    min-height: 21rem;
+  }
+
+  .hero-info-card {
+    margin-top: var(--space-3);
+  }
+
+  .accordion__panel {
+    padding-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-dropdown__panel:not([hidden]),
+  .mobile-drawer-layer {
+    animation: none;
+  }
+}
