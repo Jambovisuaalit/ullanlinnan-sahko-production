@@ -40,8 +40,11 @@ for (const relative of requiredRoutes) {
 for (const file of sourceFiles.filter((item) => /\.tsx?$/.test(item))) {
   const text = await readFile(file, "utf8");
   const rel = path.relative(root, file);
+  const allowsImageResponseMarkup = /src[\\/]app[\\/](opengraph-image|twitter-image)\.tsx$/.test(rel);
 
-  if (/<img\b/.test(text)) errors.push(`${rel}: direct <img> found; use Next Image or an approved asset component.`);
+  if (/<img\b/.test(text) && !allowsImageResponseMarkup) {
+    errors.push(`${rel}: direct <img> found; use Next Image or an approved asset component.`);
+  }
   if (/style=\{\{[^}]*position\s*:/.test(text)) errors.push(`${rel}: inline positional layout style found.`);
   if (/\bany\b/.test(text) && !/company/.test(rel)) warnings.push(`${rel}: review possible explicit any usage.`);
 
