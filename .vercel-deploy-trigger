@@ -1,5 +1,0 @@
-production deploy trigger
-source: https://github.com/Jambovisuaalit/ullanlinnan-sahko-production.git
-branch: main
-base commit: 63cee4980f3ee1b3c44c436846ceea7b2ad870bd
-requested: 2026-07-28T08:00:00+03:00
