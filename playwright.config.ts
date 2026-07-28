@@ -48,6 +48,15 @@ export default defineConfig({
       }
     },
     {
+      name: "mobile-390",
+      use: {
+        viewport: { width: 390, height: 844 },
+        deviceScaleFactor: 1,
+        isMobile: true,
+        hasTouch: true
+      }
+    },
+    {
       name: "tablet-768",
       use: {
         viewport: { width: 768, height: 1024 },
