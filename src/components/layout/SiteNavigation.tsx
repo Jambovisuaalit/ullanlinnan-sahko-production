@@ -117,6 +117,7 @@ export function SiteNavigation() {
       <div
         className="nav-dropdown"
         ref={dropdownRef}
+        data-state={dropdownOpen ? "open" : "closed"}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
             setDropdownOpen(false);
@@ -147,11 +148,10 @@ export function SiteNavigation() {
           <Icon name="chevron" />
         </button>
 
-        <div
+        {dropdownOpen ? <div
           id="desktop-service-menu"
           className="nav-dropdown__panel"
           aria-label="Palvelut"
-          hidden={!dropdownOpen}
           onKeyDown={(event) => {
             const links = dropdownLinks();
             const currentIndex = links.indexOf(document.activeElement as HTMLAnchorElement);
@@ -172,7 +172,7 @@ export function SiteNavigation() {
           }}
         >
           {serviceNavigation.map((item) => <NavLink key={item.href} {...item} onNavigate={() => setDropdownOpen(false)} />)}
-        </div>
+        </div> : null}
       </div>
 
       {siteNavigation.slice(1).map((item) => <NavLink key={item.href} href={item.href} label={item.label} />)}
