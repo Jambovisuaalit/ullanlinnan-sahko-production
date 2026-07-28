@@ -51,11 +51,15 @@ if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 8) errors.push("HomePa
 const navigationSource = await readFile(path.join(root, "src/components/layout/SiteNavigation.tsx"), "utf8");
 for (const requirement of [
   'aria-expanded={dropdownOpen}',
-  'hidden={!dropdownOpen}',
+  '{dropdownOpen ? <div',
   'setDropdownOpen(false)',
-  'aria-controls="desktop-service-menu"'
+  'aria-controls="desktop-service-menu"',
+  'data-state={dropdownOpen ? "open" : "closed"}'
 ]) {
   if (!navigationSource.includes(requirement)) errors.push(`SiteNavigation is missing dropdown requirement: ${requirement}`);
+}
+if (navigationSource.includes('hidden={!dropdownOpen}')) {
+  errors.push("Desktop service dropdown must be conditionally rendered instead of relying on CSS to hide a mounted panel.");
 }
 
 const uxCss = await readFile(path.join(root, "src/styles/ux-v03.css"), "utf8");
@@ -64,6 +68,16 @@ if (!/\[hidden\]\s*\{[^}]*display:\s*none\s*!important;/s.test(uxCss)) {
 }
 if (!uxCss.includes(".feature-copy > .button")) {
   errors.push("Feature CTA alignment guard is missing from UX refinement styles.");
+}
+
+const uxV04Css = await readFile(path.join(root, "src/styles/ux-v04.css"), "utf8");
+for (const requirement of [
+  '.nav-dropdown[data-state="open"] > button',
+  'left: 0;',
+  'width: min(20.5rem',
+  '.header-cta'
+]) {
+  if (!uxV04Css.includes(requirement)) errors.push(`UX V04 is missing desktop navigation refinement: ${requirement}`);
 }
 
 const css = await readFile(path.join(root, "src/styles/tokens.css"), "utf8");
