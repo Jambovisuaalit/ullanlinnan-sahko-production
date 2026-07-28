@@ -13,9 +13,15 @@ import { company, contactLinks } from "@/content/company";
 
 const topics: Record<string, "electrical" | "lamp-repair" | "business" | "other"> = {
   "sahkoasennukset-ja-vikakorjaukset": "electrical",
+  "pienet-sahkotyot-helsinki": "electrical",
+  "sahkomies-ullanlinna": "electrical",
+  "valaistus-ja-valaisinasennukset": "other",
   "valaisimien-korjaus": "lamp-repair",
+  "vanhan-valaisimen-sahkoistys": "lamp-repair",
+  "valaisimen-johdon-vaihto": "lamp-repair",
+  "vanhan-valaisimen-maadoitus": "lamp-repair",
   "taloyhtioille-ja-yrityksille": "business",
-  "valaistus-ja-valaisinasennukset": "other"
+  "taloyhtioiden-sahkotyot-helsinki": "business"
 };
 
 export function ServicePage({ content, seo, serviceType }: { content: ServiceContent; seo: SeoPage; serviceType: string }) {
