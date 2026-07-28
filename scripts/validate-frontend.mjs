@@ -48,6 +48,24 @@ for (const file of sourceFiles.filter((item) => /\.tsx?$/.test(item))) {
 const pageComposition = await readFile(path.join(root, "src/components/pages/HomePage.tsx"), "utf8");
 if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 8) errors.push("HomePage is not composed from reusable section components.");
 
+const navigationSource = await readFile(path.join(root, "src/components/layout/SiteNavigation.tsx"), "utf8");
+for (const requirement of [
+  'aria-expanded={dropdownOpen}',
+  'hidden={!dropdownOpen}',
+  'setDropdownOpen(false)',
+  'aria-controls="desktop-service-menu"'
+]) {
+  if (!navigationSource.includes(requirement)) errors.push(`SiteNavigation is missing dropdown requirement: ${requirement}`);
+}
+
+const uxCss = await readFile(path.join(root, "src/styles/ux-v03.css"), "utf8");
+if (!/\[hidden\]\s*\{[^}]*display:\s*none\s*!important;/s.test(uxCss)) {
+  errors.push("Hidden UI panels are not protected from author CSS display overrides.");
+}
+if (!uxCss.includes(".feature-copy > .button")) {
+  errors.push("Feature CTA alignment guard is missing from UX refinement styles.");
+}
+
 const css = await readFile(path.join(root, "src/styles/tokens.css"), "utf8");
 for (const token of ["--container-main-max: 80rem", "--container-text-max: 45rem", "--container-form-max: 40rem", "--container-media-max: 90rem", "--grid-columns: 4", "--grid-columns: 6", "--grid-columns: 8", "--grid-columns: 12"]) {
   if (!css.includes(token)) errors.push(`Missing design token: ${token}`);
