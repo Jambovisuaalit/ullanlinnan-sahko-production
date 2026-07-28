@@ -4,6 +4,7 @@ export const brandAssets = {
   faviconSvg: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg",
   faviconIco: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico",
   appleTouchIcon: "/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png",
+  socialLogo: "/brand/USOY_LOGO_HEADER_COMPACT_BLACK_RGB_SVG.svg",
   socialPreview: "/opengraph-image"
 } as const;
 
