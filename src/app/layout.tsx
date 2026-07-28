@@ -8,6 +8,7 @@ import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { JsonLdScript } from "@/components/ui/JsonLd";
 import { company } from "@/content/company";
 import { seoPages } from "@/content/seo";
+import { brandAssets } from "@/content/brand-assets";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { localBusinessSchema, websiteSchema } from "@/lib/seo/schema";
 
@@ -16,12 +17,19 @@ export const metadata: Metadata = {
   applicationName: company.name,
   icons: {
     icon: [
-      { url: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_RGB_SVG.svg", type: "image/svg+xml" },
-      { url: "/brand/USOY_LOGO_FAVICON_BLACK_ON_PAPER_ICO_MULTI.ico" }
+      { url: brandAssets.faviconSvg, type: "image/svg+xml" },
+      { url: brandAssets.faviconIco }
     ],
-    apple: [{ url: "/brand/USOY_LOGO_APPLE_TOUCH_BLACK_ON_PAPER_PNG_180X180.png", sizes: "180x180", type: "image/png" }]
+    apple: [
+      {
+        url: brandAssets.appleTouchIcon,
+        sizes: "180x180",
+        type: "image/png"
+      }
+    ]
   }
 };
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -30,6 +38,19 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "#1A1A1A" }
   ]
 };
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fi"><body><a className="skip-link" href="#main-content">Siirry pääsisältöön</a><Header />{children}<Footer /><MobileActionBar /><JsonLdScript data={localBusinessSchema()} /><JsonLdScript data={websiteSchema()} /></body></html>;
+  return (
+    <html lang="fi">
+      <body>
+        <a className="skip-link" href="#main-content">Siirry pääsisältöön</a>
+        <Header />
+        {children}
+        <Footer />
+        <MobileActionBar />
+        <JsonLdScript data={localBusinessSchema()} />
+        <JsonLdScript data={websiteSchema()} />
+      </body>
+    </html>
+  );
 }
