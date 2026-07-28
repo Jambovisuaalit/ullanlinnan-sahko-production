@@ -80,6 +80,24 @@ for (const requirement of [
   if (!uxV04Css.includes(requirement)) errors.push(`UX V04 is missing desktop navigation refinement: ${requirement}`);
 }
 
+const uxV05Css = await readFile(path.join(root, "src/styles/ux-v05.css"), "utf8");
+for (const requirement of [
+  "overflow-x:clip",
+  "height:100dvh",
+  '.nav-dropdown[data-state="closed"]>.nav-dropdown__panel',
+  ".mobile-drawer nav{min-height:0;overflow-y:auto",
+  ":has(.media-requirement)",
+  "@media (max-width:47.99rem)",
+  "env(safe-area-inset-bottom)"
+]) {
+  if (!uxV05Css.includes(requirement)) errors.push(`UX V05 is missing mobile-first safeguard: ${requirement}`);
+}
+
+const globalCss = await readFile(path.join(root, "src/app/globals.css"), "utf8");
+if (!globalCss.includes('@import "../styles/ux-v05.css";')) {
+  errors.push("UX V05 stylesheet is not loaded by globals.css.");
+}
+
 const css = await readFile(path.join(root, "src/styles/tokens.css"), "utf8");
 for (const token of ["--container-main-max: 80rem", "--container-text-max: 45rem", "--container-form-max: 40rem", "--container-media-max: 90rem", "--grid-columns: 4", "--grid-columns: 6", "--grid-columns: 8", "--grid-columns: 12"]) {
   if (!css.includes(token)) errors.push(`Missing design token: ${token}`);
