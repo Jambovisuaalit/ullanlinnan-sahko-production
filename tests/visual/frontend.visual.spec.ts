@@ -28,17 +28,90 @@ test.describe("responsive visual regression", () => {
     test(`${route.name} has no horizontal overflow`, async ({ page }) => {
       await preparePage(page, route.path);
 
-      const layout = await page.evaluate(() => ({
-        scrollWidth: document.documentElement.scrollWidth,
-        clientWidth: document.documentElement.clientWidth
-      }));
+      const layout = await page.evaluate(() => {
+        const viewportWidth = document.documentElement.clientWidth;
+        const selectors = [
+          "figure.media-frame",
+          ".media-brand-panel",
+          ".media-requirement",
+          ".mobile-action-bar"
+        ];
+        const offenders = selectors.flatMap((selector) =>
+          Array.from(document.querySelectorAll<HTMLElement>(selector)).flatMap((element) => {
+            const rect = element.getBoundingClientRect();
+            const style = window.getComputedStyle(element);
+            const visible = style.display !== "none" && style.visibility !== "hidden" && rect.width > 0;
+            const overflows = rect.left < -0.5 || rect.right > viewportWidth + 0.5;
+            return visible && overflows
+              ? [{ selector, left: rect.left, right: rect.right, width: rect.width, viewportWidth }]
+              : [];
+          })
+        );
+
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: viewportWidth,
+          offenders
+        };
+      });
 
       expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth);
+      expect(layout.offenders).toEqual([]);
       await expect(page).toHaveScreenshot(`${route.name}-full-page.png`, {
         fullPage: true
       });
     });
   }
+
+  test("390px mobile critical surfaces stay fluid", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== "mobile-390", "390px-specific regression gate");
+    await preparePage(page, "/");
+
+    const diagnostics = await page.evaluate(() => {
+      const viewportWidth = document.documentElement.clientWidth;
+      const bar = document.querySelector<HTMLElement>(".mobile-action-bar");
+      const barRect = bar?.getBoundingClientRect() ?? null;
+      const linkRects = bar
+        ? Array.from(bar.querySelectorAll<HTMLElement>("a")).map((link) => link.getBoundingClientRect())
+        : [];
+      const iconRects = bar
+        ? Array.from(bar.querySelectorAll<SVGElement>("a > svg")).map((icon) => icon.getBoundingClientRect())
+        : [];
+      const honeypot = document.querySelector<HTMLElement>(".honeypot");
+      const honeypotRect = honeypot?.getBoundingClientRect() ?? null;
+
+      return {
+        viewportWidth,
+        bar: barRect && { left: barRect.left, right: barRect.right, width: barRect.width },
+        links: linkRects.map((rect) => ({ left: rect.left, right: rect.right, width: rect.width })),
+        icons: iconRects.map((rect) => ({ width: rect.width, height: rect.height })),
+        honeypot:
+          honeypotRect && {
+            left: honeypotRect.left,
+            right: honeypotRect.right,
+            width: honeypotRect.width,
+            height: honeypotRect.height
+          }
+      };
+    });
+
+    expect(diagnostics.bar).not.toBeNull();
+    expect(diagnostics.bar?.left).toBeGreaterThanOrEqual(-0.5);
+    expect(diagnostics.bar?.right).toBeLessThanOrEqual(diagnostics.viewportWidth + 0.5);
+    expect(diagnostics.bar?.width).toBeLessThanOrEqual(diagnostics.viewportWidth);
+    expect(diagnostics.links).toHaveLength(2);
+    for (const link of diagnostics.links) {
+      expect(link.width).toBeLessThanOrEqual(diagnostics.viewportWidth / 2 + 0.5);
+    }
+    for (const icon of diagnostics.icons) {
+      expect(icon.width).toBeLessThanOrEqual(24);
+      expect(icon.height).toBeLessThanOrEqual(24);
+    }
+    expect(diagnostics.honeypot).not.toBeNull();
+    expect(Math.abs(diagnostics.honeypot?.left ?? 0)).toBeLessThanOrEqual(2);
+    expect(diagnostics.honeypot?.width).toBeLessThanOrEqual(1);
+    expect(diagnostics.honeypot?.height).toBeLessThanOrEqual(1);
+  });
 
   test("navigation is closed on first render", async ({ page }) => {
     await preparePage(page, "/");
