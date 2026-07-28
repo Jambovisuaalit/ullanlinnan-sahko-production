@@ -27,7 +27,6 @@ export default defineConfig({
     colorScheme: "light",
     locale: "fi-FI",
     timezoneId: "Europe/Helsinki",
-    reducedMotion: "reduce",
     serviceWorkers: "block",
     trace: "retain-on-failure",
     screenshot: "only-on-failure"
