@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { serviceNavigation, siteNavigation } from "@/content/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -51,12 +51,12 @@ export function SiteNavigation() {
     });
   }
 
-  function closeDrawer(restoreFocus = true) {
+  const closeDrawer = useCallback((restoreFocus = true) => {
     setDrawerOpen(false);
     if (restoreFocus) {
       requestAnimationFrame(() => drawerTriggerRef.current?.focus());
     }
-  }
+  }, []);
 
   useEffect(() => {
     setDropdownOpen(false);
@@ -119,7 +119,7 @@ export function SiteNavigation() {
       document.body.classList.remove("nav-open");
       delete document.body.dataset.scrollLock;
     };
-  }, [drawerOpen]);
+  }, [closeDrawer, drawerOpen]);
 
   useEffect(() => {
     function onPointer(event: PointerEvent) {
