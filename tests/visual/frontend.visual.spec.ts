@@ -7,6 +7,7 @@ const snapshotRoutes = [
 ] as const;
 
 async function preparePage(page: Page, path: string) {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(path, { waitUntil: "networkidle" });
   await page.addStyleTag({
     content: `
