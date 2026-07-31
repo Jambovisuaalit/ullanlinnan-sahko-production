@@ -4,6 +4,10 @@ const explicitSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 const vercelUrl = process.env.VERCEL_URL?.trim();
 const siteUrl = explicitSiteUrl || (vercelUrl ? `https://${vercelUrl}` : "");
 const webhook = process.env.CONTACT_FORM_WEBHOOK_URL?.trim();
+const resendKey = process.env.RESEND_API_KEY?.trim();
+const resendFrom = process.env.CONTACT_FORM_FROM?.trim();
+const resendRecipient = process.env.CONTACT_FORM_RECIPIENT?.trim();
+const demoMode = process.env.CONTACT_FORM_DEMO_MODE === "true";
 
 const isValidHttps = (value) => Boolean(value && /^https:\/\//i.test(value));
 const isPlaceholder = (value) => /VAHVISTETTAVA|LOPULLINEN|localhost|example\.invalid|preview\.invalid/i.test(value || "");
@@ -17,8 +21,15 @@ if (!isPreview && (!explicitSiteUrl || isPlaceholder(explicitSiteUrl))) {
   failures.push("Production requires the final HTTPS NEXT_PUBLIC_SITE_URL.");
 }
 
-if (!isPreview && (!isValidHttps(webhook) || isPlaceholder(webhook))) {
-  failures.push("Production requires a verified HTTPS CONTACT_FORM_WEBHOOK_URL.");
+const hasResendTransport = Boolean(resendKey && resendFrom && resendRecipient);
+const hasWebhookTransport = isValidHttps(webhook) && !isPlaceholder(webhook);
+
+if (!isPreview && !hasResendTransport && !hasWebhookTransport) {
+  failures.push("Production requires a complete Resend configuration or a verified HTTPS CONTACT_FORM_WEBHOOK_URL.");
+}
+
+if (!isPreview && demoMode) {
+  failures.push("CONTACT_FORM_DEMO_MODE must be disabled in production.");
 }
 
 if (failures.length) {

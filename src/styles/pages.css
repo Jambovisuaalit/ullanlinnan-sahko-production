@@ -224,6 +224,51 @@ h2 {
   height: 1.25rem;
 }
 
+.trust-bar {
+  border-block: 1px solid rgb(251 249 245 / 14%);
+  background: var(--color-brand-black);
+  color: var(--color-brand-paper);
+}
+
+.trust-bar__grid {
+  display: grid;
+}
+
+.trust-bar__item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: 1.1rem;
+  border-bottom: 1px solid rgb(251 249 245 / 14%);
+}
+
+.trust-bar__item:last-child {
+  border-bottom: 0;
+}
+
+.trust-bar__item > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-brand-gold);
+}
+
+.trust-bar__item > span {
+  min-width: 0;
+  display: grid;
+  line-height: 1.35;
+}
+
+.trust-bar__item strong {
+  font-size: 0.88rem;
+}
+
+.trust-bar__item small {
+  color: rgb(251 249 245 / 68%);
+  font-size: 0.75rem;
+}
+
 .service-grid,
 .segment-grid,
 .value-grid,
@@ -437,6 +482,134 @@ h2 {
   height: 2rem;
 }
 
+.location-card {
+  min-height: 22rem;
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-default);
+}
+
+.location-card__map {
+  position: relative;
+  min-height: 13rem;
+  overflow: hidden;
+  background:
+    linear-gradient(28deg, transparent 46%, rgb(183 179 171 / 34%) 47%, rgb(183 179 171 / 34%) 49%, transparent 50%),
+    linear-gradient(118deg, transparent 44%, rgb(183 179 171 / 28%) 45%, rgb(183 179 171 / 28%) 47%, transparent 48%),
+    var(--color-bg-secondary);
+}
+
+.location-card__map::before,
+.location-card__map::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgb(74 85 74 / 16%);
+  background: rgb(251 249 245 / 56%);
+}
+
+.location-card__map::before {
+  inset: 1.5rem 48% 5rem 1rem;
+}
+
+.location-card__map::after {
+  inset: 6rem 1rem 1rem 58%;
+}
+
+.location-card__road {
+  position: absolute;
+  z-index: 2;
+  height: 0.35rem;
+  border-block: 1px solid rgb(82 82 81 / 26%);
+  background: var(--color-brand-paper);
+  rotate: -18deg;
+}
+
+.location-card__road--one {
+  width: 120%;
+  top: 44%;
+  left: -10%;
+}
+
+.location-card__road--two {
+  width: 80%;
+  top: 35%;
+  left: 26%;
+  rotate: 62deg;
+}
+
+.location-card__road--three {
+  width: 70%;
+  top: 68%;
+  left: -8%;
+  rotate: 24deg;
+}
+
+.location-card__water {
+  position: absolute;
+  right: -18%;
+  bottom: -45%;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #dce6e2;
+}
+
+.location-card__pin {
+  position: absolute;
+  z-index: 4;
+  top: 44%;
+  left: 48%;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  translate: -50% -50%;
+  border: 0.3rem solid var(--color-brand-paper);
+  border-radius: 50% 50% 50% 0;
+  background: var(--color-brand-black);
+  color: var(--color-brand-paper);
+  rotate: -45deg;
+  box-shadow: var(--shadow-default);
+}
+
+.location-card__pin svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  rotate: 45deg;
+}
+
+.location-card__label {
+  position: absolute;
+  z-index: 3;
+  top: calc(44% + 2.25rem);
+  left: 48%;
+  translate: -50% 0;
+  padding: 0.2rem 0.45rem;
+  background: rgb(251 249 245 / 88%);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.location-card__content {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border-top: 3px solid var(--color-brand-gold);
+}
+
+.location-card__content h3 {
+  font-size: var(--text-h3);
+}
+
+.location-card__content .button {
+  margin-top: var(--space-3);
+}
+
 .service-hero--compact {
   padding-block: clamp(2.5rem, 4vw, 4rem);
 }
@@ -639,6 +812,14 @@ h2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .location-card {
+    grid-template-columns: minmax(0, 1.2fr) minmax(15rem, 0.8fr);
+  }
+
+  .location-card__map {
+    min-height: 20rem;
+  }
+
   .service-card {
     min-height: 16.5rem;
     padding: 1.4rem;
@@ -707,6 +888,25 @@ h2 {
   .content-sidebar-layout {
     grid-template-columns: minmax(0, 8fr) minmax(16rem, 4fr);
     gap: var(--grid-gutter);
+  }
+
+  .trust-bar__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .trust-bar__item {
+    padding-inline: clamp(1rem, 2vw, 2rem);
+    border-right: 1px solid rgb(251 249 245 / 14%);
+    border-bottom: 0;
+  }
+
+  .trust-bar__item:first-child {
+    padding-left: 0;
+  }
+
+  .trust-bar__item:last-child {
+    padding-right: 0;
+    border-right: 0;
   }
 
   .sticky-contact-card {

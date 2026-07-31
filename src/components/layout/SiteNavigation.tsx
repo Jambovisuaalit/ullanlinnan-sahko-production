@@ -13,8 +13,17 @@ function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function NavLink({ href, label, onNavigate }: { href: string; label: string; onNavigate?: () => void }) {
-  const pathname = usePathname();
+function NavLink({
+  href,
+  label,
+  pathname,
+  onNavigate
+}: {
+  href: string;
+  label: string;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
   const active = isActive(pathname, href);
 
   return (
@@ -32,6 +41,11 @@ function NavLink({ href, label, onNavigate }: { href: string; label: string; onN
 
 export function SiteNavigation() {
   const pathname = usePathname();
+
+  return <SiteNavigationState key={pathname} pathname={pathname} />;
+}
+
+function SiteNavigationState({ pathname }: { pathname: string }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -57,11 +71,6 @@ export function SiteNavigation() {
       requestAnimationFrame(() => drawerTriggerRef.current?.focus());
     }
   }, []);
-
-  useEffect(() => {
-    setDropdownOpen(false);
-    setDrawerOpen(false);
-  }, [pathname]);
 
   useEffect(() => {
     const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
@@ -209,14 +218,14 @@ export function SiteNavigation() {
               }}
             >
               {serviceNavigation.map((item) => (
-                <NavLink key={item.href} {...item} onNavigate={() => setDropdownOpen(false)} />
+                <NavLink key={item.href} {...item} pathname={pathname} onNavigate={() => setDropdownOpen(false)} />
               ))}
             </div>
           ) : null}
         </div>
 
         {siteNavigation.slice(1).map((item) => (
-          <NavLink key={item.href} href={item.href} label={item.label} />
+          <NavLink key={item.href} href={item.href} label={item.label} pathname={pathname} />
         ))}
         <ButtonLink href="/yhteystiedot#yhteydenotto" className="header-cta">
           Ota yhteyttä
@@ -268,10 +277,16 @@ export function SiteNavigation() {
             <nav aria-label="Mobiilinavigaatio">
               <p className="mobile-nav-label">Palvelut</p>
               {serviceNavigation.map((item) => (
-                <NavLink key={item.href} {...item} onNavigate={() => closeDrawer(false)} />
+                <NavLink key={item.href} {...item} pathname={pathname} onNavigate={() => closeDrawer(false)} />
               ))}
               {siteNavigation.slice(1).map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} onNavigate={() => closeDrawer(false)} />
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  pathname={pathname}
+                  onNavigate={() => closeDrawer(false)}
+                />
               ))}
             </nav>
 

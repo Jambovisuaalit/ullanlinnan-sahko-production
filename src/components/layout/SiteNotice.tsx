@@ -1,5 +1,6 @@
 import { company, contactLinks } from "@/content/company";
 import { Icon } from "@/components/ui/Icon";
+import { StoreStatus } from "@/components/ui/StoreStatus";
 
 export function SiteNotice() {
   return (
@@ -7,10 +8,7 @@ export function SiteNotice() {
       <div className="container site-notice__row">
         <span>
           <Icon name="clock" />
-          <span className="site-notice__mobile-copy">Avoinna ke 10–17</span>
-          <span className="site-notice__desktop-copy">
-            Myymälä avoinna {company.openingHours.display.toLowerCase()}
-          </span>
+          <StoreStatus compact />
         </span>
         <span>
           <Icon name="pin" />
