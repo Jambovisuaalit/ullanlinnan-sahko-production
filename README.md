@@ -5,22 +5,41 @@ Tämä repository on Ullanlinnan Sähkö Oy:n **ainoa aktiivinen frontend-lähde
 - Aktiivinen haara: `main`
 - Preview-lähdetotuus: `main`
 - Teknologia: Next.js App Router + React + TypeScript
-- Vercel-preview: `ullanlinnan-sahko-client-preview`
+- Asiakkaalle jaettava preview: `https://ullanlinnan-sahko-preview-clean.vercel.app`
+- Vercel-preview-projekti: `ullanlinnan-sahko-preview-clean`
 - Vanhoja `ullanlinnan-sahko` / `ullanlinnan-sahko-v2` -repoja ei käytetä jatkokehitykseen tai deployhin.
+- Vanhoja Ullanlinnan Sähkö -Vercel-projekteja ei pidetä lähdetotuutena eikä niiden URL-osoitteita jaeta asiakkaalle.
 
 ## Preview-status 1.8.2026
 
-`main` sisältää asiakkaalle kokeiltavan preview-version:
+`main` sisältää asiakkaalle kokeiltavan preview-version ja siitä on julkaistu erillinen noindex-client-preview.
 
-- responsiivinen desktop- ja mobiilinavigaatio
-- kevennetty päävalikko: Sähkötyöt / Valaisimet / Myymälä / Meistä / Yhteystiedot
+Preview sisältää:
+
+- responsiivisen desktop- ja mobiilinavigaation
+- kevennetyn päävalikon: Sähkötyöt / Valaisimet / Myymälä / Meistä / Yhteystiedot
 - sähkö-, valaistus-, valaisinkorjaus-, myymälä- ja B2B-polut
-- preview-turvallinen yhteydenottolomake
-- hyväksytty V04-logo ja faviconit
+- preview-turvallisen yhteydenottolomakkeen, joka ei lähetä henkilötietoja
+- hyväksytyn V04 Header Compact -logon
 - brändätyt mediapinnat ilman sisäisiä tuotantopaikkamerkintöjä
-- vanha `/pienet-sahkotyot-helsinki` ohjataan sähköasennukset-sivulle eikä sitä sisällytetä sitemap-indeksointiin
+- `noindex, nofollow` -suojauksen koko previewlle
+- vanhan `/pienet-sahkotyot-helsinki`-osoitteen ohjauksen sähköasennukset-sivulle
 
 Vahvistamattomia tuntihintoja tai keksittyjä yrityskuvia ei näytetä previewssä.
+
+## Preview QA
+
+Tarkistettu 1.8.2026:
+
+- Vercel deployment `READY`
+- `/` → HTTP 200
+- `/sahkoasennukset-ja-vikakorjaukset` → HTTP 200
+- `/yhteystiedot` → HTTP 200
+- `/app.js` → HTTP 200
+- V04 Header Compact -SVG → HTTP 200
+- `/pienet-sahkotyot-helsinki` ohjautuu sähköasennukset-sisältöön
+- `X-Robots-Tag: noindex, nofollow`
+- runtime-virheitä: 0 tarkistushetkellä
 
 ## Teknologia
 
