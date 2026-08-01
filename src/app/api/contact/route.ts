@@ -19,6 +19,10 @@ function isDemoMode() {
   return process.env.CONTACT_FORM_DEMO_MODE === "true" || process.env.VERCEL_ENV === "preview";
 }
 
+function attachmentsEnabled() {
+  return process.env.NEXT_PUBLIC_ENABLE_CONTACT_ATTACHMENTS === "true";
+}
+
 export async function POST(request: Request) {
   try {
     const contentLength = Number(request.headers.get("content-length") ?? 0);
@@ -35,8 +39,14 @@ export async function POST(request: Request) {
     if (!parsed.success) return NextResponse.json({ ok: false, code: "invalid_form" }, { status: 400 });
     if (parsed.data.website) return NextResponse.json({ ok: true, mode: "ignored" });
     if (Date.now() - parsed.data.startedAt < 1500) return NextResponse.json({ ok: false, code: "rate_limited" }, { status: 429 });
+
     const files = form.getAll("attachments").filter((value): value is File => value instanceof File && value.size > 0);
-    if (validateFiles(files)) return NextResponse.json({ ok: false, code: "invalid_files" }, { status: 400 });
+    if (files.length > 0 && !attachmentsEnabled()) {
+      return NextResponse.json({ ok: false, code: "attachments_disabled" }, { status: 400 });
+    }
+    if (attachmentsEnabled() && validateFiles(files)) {
+      return NextResponse.json({ ok: false, code: "invalid_files" }, { status: 400 });
+    }
 
     if (isDemoMode()) {
       return NextResponse.json({

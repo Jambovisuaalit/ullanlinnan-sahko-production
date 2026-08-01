@@ -6,6 +6,8 @@ const snapshotRoutes = [
   { path: "/myymala", name: "store" }
 ] as const;
 
+const approvedNavigation = ["Sähkötyöt", "Valaisimet", "Myymälä", "Meistä", "Yhteystiedot"] as const;
+
 async function preparePage(page: Page, path: string) {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(path, { waitUntil: "networkidle" });
@@ -34,7 +36,8 @@ test.describe("responsive visual regression", () => {
           "figure.media-frame",
           ".media-brand-panel",
           ".media-requirement",
-          ".mobile-action-bar"
+          ".mobile-action-bar",
+          ".analytics-consent"
         ];
         const offenders = selectors.flatMap((selector) =>
           Array.from(document.querySelectorAll<HTMLElement>(selector)).flatMap((element) => {
@@ -113,37 +116,56 @@ test.describe("responsive visual regression", () => {
     expect(diagnostics.honeypot?.height).toBeLessThanOrEqual(1);
   });
 
-  test("navigation is closed on first render", async ({ page }) => {
+  test("navigation is closed on first render and desktop uses approved flat links", async ({ page }) => {
     await preparePage(page, "/");
 
-    await expect(page.locator("#desktop-service-menu")).toHaveCount(0);
     await expect(page.locator("#mobile-navigation")).toHaveCount(0);
-
-    const serviceTrigger = page.getByRole("button", { name: /Palvelut/ });
-    if (await serviceTrigger.isVisible()) {
-      await expect(serviceTrigger).toHaveAttribute("aria-expanded", "false");
-    }
+    await expect(page.locator("#desktop-service-menu")).toHaveCount(0);
 
     const mobileTrigger = page.getByRole("button", { name: "Avaa sivuston valikko" });
     if (await mobileTrigger.isVisible()) {
       await expect(mobileTrigger).toHaveAttribute("aria-expanded", "false");
     }
+
+    const desktopNav = page.getByRole("navigation", { name: "Päänavigaatio" });
+    if (await desktopNav.isVisible()) {
+      for (const label of approvedNavigation) {
+        await expect(desktopNav.getByRole("link", { name: label, exact: true })).toBeVisible();
+      }
+    }
   });
 
-  test("navigation open state matches the active breakpoint", async ({ page }) => {
+  test("navigation interaction matches the active breakpoint", async ({ page }) => {
     await preparePage(page, "/");
 
-    const serviceTrigger = page.getByRole("button", { name: /Palvelut/ });
-    if (await serviceTrigger.isVisible()) {
-      await serviceTrigger.click();
-      await expect(page.locator("#desktop-service-menu")).toBeVisible();
-      await expect(page.locator(".site-header")).toHaveScreenshot("desktop-services-open.png");
+    const mobileTrigger = page.getByRole("button", { name: "Avaa sivuston valikko" });
+    if (await mobileTrigger.isVisible()) {
+      await mobileTrigger.click();
+      await expect(page.locator("#mobile-navigation")).toBeVisible();
+      await expect(mobileTrigger).toHaveAttribute("aria-expanded", "true");
+      await expect(page.locator(".mobile-drawer-layer")).toHaveScreenshot("mobile-navigation-open.png");
       return;
     }
 
-    const mobileTrigger = page.getByRole("button", { name: "Avaa sivuston valikko" });
-    await mobileTrigger.click();
-    await expect(page.locator("#mobile-navigation")).toBeVisible();
-    await expect(page.locator(".mobile-drawer-layer")).toHaveScreenshot("mobile-navigation-open.png");
+    const desktopNav = page.getByRole("navigation", { name: "Päänavigaatio" });
+    await expect(desktopNav).toBeVisible();
+    for (const label of approvedNavigation) {
+      await expect(desktopNav.getByRole("link", { name: label, exact: true })).toBeVisible();
+    }
+    await expect(page.locator(".site-header")).toHaveScreenshot("desktop-navigation-flat.png");
+  });
+
+  test("unconfirmed production gates stay disabled by default", async ({ page }) => {
+    await preparePage(page, "/");
+
+    await expect(page.locator("#hinnasto")).toHaveCount(0);
+    await expect(page.locator("#contact-attachments")).toHaveCount(0);
+    await expect(page.locator(".analytics-consent")).toHaveCount(0);
+  });
+
+  test("retired small-electrical URL returns a permanent 301", async ({ request }) => {
+    const response = await request.get("/pienet-sahkotyot-helsinki", { maxRedirects: 0 });
+    expect(response.status()).toBe(301);
+    expect(response.headers()["location"]).toContain("/sahkoasennukset-ja-vikakorjaukset");
   });
 });

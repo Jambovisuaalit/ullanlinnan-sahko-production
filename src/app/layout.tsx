@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
+import { AnalyticsConsent } from "@/components/analytics/AnalyticsConsent";
 import { JsonLdScript } from "@/components/ui/JsonLd";
 import { company } from "@/content/company";
 import { seoPages } from "@/content/seo";
@@ -40,6 +41,9 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const analyticsEnabled = process.env.NEXT_PUBLIC_ENABLE_GA4 === "true";
+  const measurementId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID?.trim();
+
   return (
     <html lang="fi">
       <body>
@@ -48,6 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <Footer />
         <MobileActionBar />
+        {analyticsEnabled && measurementId ? <AnalyticsConsent measurementId={measurementId} /> : null}
         <JsonLdScript data={localBusinessSchema()} />
         <JsonLdScript data={websiteSchema()} />
       </body>

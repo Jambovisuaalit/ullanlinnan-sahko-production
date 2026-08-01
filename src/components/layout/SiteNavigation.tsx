@@ -68,11 +68,12 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
     if (!drawerOpen) return;
     const root = drawerRef.current;
     if (!root) return;
+    const drawerRoot = root;
 
     document.documentElement.classList.add("nav-open");
     document.body.classList.add("nav-open");
     document.body.dataset.scrollLock = "true";
-    root.querySelector<HTMLElement>("[data-drawer-close]")?.focus();
+    drawerRoot.querySelector<HTMLElement>("[data-drawer-close]")?.focus();
 
     function onKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -83,7 +84,7 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
       if (event.key !== "Tab") return;
 
       const focusable = Array.from(
-        root.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        drawerRoot.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
       ).filter((element) => !element.hasAttribute("hidden"));
       if (!focusable.length) return;
 
