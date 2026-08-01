@@ -1,11 +1,5 @@
-import type { Metadata } from "next";
-import { ServicePage } from "@/components/pages/ServicePage";
-import { services } from "@/content/services";
-import { seoPages } from "@/content/seo";
-import { buildMetadata } from "@/lib/seo/metadata";
-
-export const metadata: Metadata = buildMetadata(seoPages.smallElectrical);
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <ServicePage content={services.smallElectrical} seo={seoPages.smallElectrical} serviceType="Pienet sähkötyöt" />;
+  redirect("/sahkoasennukset-ja-vikakorjaukset");
 }

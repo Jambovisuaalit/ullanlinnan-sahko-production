@@ -9,10 +9,12 @@ import { HomeProcessSection } from "@/components/sections/home/HomeProcessSectio
 import { HomeFaqSection } from "@/components/sections/home/HomeFaqSection";
 import { HomeContactSection } from "@/components/sections/home/HomeContactSection";
 import { HomeLocationSection } from "@/components/sections/home/HomeLocationSection";
+import { HomeTrustBar } from "@/components/sections/home/HomeTrustBar";
 
 export function HomePage() {
   return <main id="main-content">
     <HomeHero />
+    <HomeTrustBar />
     <HomeServicesSection />
     <HomeFeatureSection eyebrow="Sähkötyöt" title="Sähkötyöt kotiin ja arjen vikatilanteisiin" text="Tarvitsetko sähköasennuksen tai apua sähkövian selvittämiseen? Kerro kohde, havaittu ongelma ja mahdolliset aiemmat muutokset." href="/sahkoasennukset-ja-vikakorjaukset" cta="Tutustu sähköpalveluihin" ratio="4/3" requirement="Aito sähköasennus- tai mittaustilanne." />
     <HomeFeatureSection mediaFirst warm eyebrow="Valaistus" title="Valaisin ja asennus toimivaksi kokonaisuudeksi" text="Valaisimen, kiinnityspaikan ja olemassa olevan liitännän tiedot auttavat arvioimaan turvallisen asennustavan." href="/valaistus-ja-valaisinasennukset" cta="Tutustu valaisinasennuksiin" ratio="16/10" requirement="Aito valaisimen asennustilanne tai valmis valaistus todellisessa kohteessa." />

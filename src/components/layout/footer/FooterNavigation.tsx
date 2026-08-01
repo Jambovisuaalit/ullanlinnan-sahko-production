@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { serviceNavigation } from "@/content/navigation";
 
-const siteLinks = [
+const primarySiteLinks = [
   { href: "/myymala", label: "Myymälä" },
   { href: "/meista", label: "Meistä" },
-  { href: "/yhteystiedot", label: "Yhteystiedot" },
+  { href: "/yhteystiedot", label: "Yhteystiedot" }
+] as const;
+
+const legalSiteLinks = [
   { href: "/tietosuojaseloste", label: "Tietosuojaseloste" },
   { href: "/evastekaytanto", label: "Evästekäytäntö" },
   { href: "/saavutettavuusseloste", label: "Saavutettavuusseloste" }
 ] as const;
 
 export function FooterNavigation() {
+  const siteLinks = process.env.NEXT_PUBLIC_LEGAL_CONTENT_APPROVED === "true"
+    ? [...primarySiteLinks, ...legalSiteLinks]
+    : primarySiteLinks;
+
   return (
     <>
       <nav aria-label="Palvelut">
