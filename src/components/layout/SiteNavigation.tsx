@@ -3,11 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { serviceNavigation, siteNavigation } from "@/content/navigation";
+import {
+  electricalNavigation,
+  lightingNavigation,
+  siteNavigation,
+  type NavigationItem
+} from "@/content/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
 const DESKTOP_MEDIA_QUERY = "(min-width: 68rem)";
+type DropdownId = "electrical" | "lighting" | null;
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
@@ -30,23 +36,49 @@ function NavLink({ href, label, onNavigate }: { href: string; label: string; onN
   );
 }
 
+function groupIsActive(pathname: string, items: readonly NavigationItem[]) {
+  return items.some((item) => isActive(pathname, item.href));
+}
+
 export function SiteNavigation() {
   const pathname = usePathname();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<DropdownId>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
+  const electricalRef = useRef<HTMLDivElement>(null);
+  const lightingRef = useRef<HTMLDivElement>(null);
+  const electricalTriggerRef = useRef<HTMLButtonElement>(null);
+  const lightingTriggerRef = useRef<HTMLButtonElement>(null);
   const drawerTriggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  function dropdownLinks() {
-    return Array.from(dropdownRef.current?.querySelectorAll<HTMLAnchorElement>(".nav-dropdown__panel a") ?? []);
+  const dropdownConfig = {
+    electrical: {
+      label: "Sähkötyöt",
+      items: electricalNavigation,
+      rootRef: electricalRef,
+      triggerRef: electricalTriggerRef,
+      panelId: "desktop-electrical-menu",
+      triggerId: "desktop-electrical-trigger"
+    },
+    lighting: {
+      label: "Valaisimet",
+      items: lightingNavigation,
+      rootRef: lightingRef,
+      triggerRef: lightingTriggerRef,
+      panelId: "desktop-lighting-menu",
+      triggerId: "desktop-lighting-trigger"
+    }
+  } as const;
+
+  function dropdownLinks(id: Exclude<DropdownId, null>) {
+    const root = dropdownConfig[id].rootRef.current;
+    return Array.from(root?.querySelectorAll<HTMLAnchorElement>(".nav-dropdown__panel a") ?? []);
   }
 
-  function openDropdownAndFocus(position: "first" | "last") {
-    setDropdownOpen(true);
+  function openDropdownAndFocus(id: Exclude<DropdownId, null>, position: "first" | "last") {
+    setOpenDropdown(id);
     requestAnimationFrame(() => {
-      const links = dropdownLinks();
+      const links = dropdownLinks(id);
       (position === "first" ? links[0] : links.at(-1))?.focus();
     });
   }
@@ -59,7 +91,7 @@ export function SiteNavigation() {
   }, []);
 
   useEffect(() => {
-    setDropdownOpen(false);
+    setOpenDropdown(null);
     setDrawerOpen(false);
   }, [pathname]);
 
@@ -69,7 +101,7 @@ export function SiteNavigation() {
     function syncNavigationMode(event?: MediaQueryListEvent) {
       const desktop = event?.matches ?? desktopQuery.matches;
       if (desktop) setDrawerOpen(false);
-      else setDropdownOpen(false);
+      else setOpenDropdown(null);
     }
 
     syncNavigationMode();
@@ -96,7 +128,7 @@ export function SiteNavigation() {
 
       if (event.key !== "Tab") return;
       const focusable = Array.from(
-        root!.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        root.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
       ).filter((element) => !element.hasAttribute("hidden"));
 
       if (!focusable.length) return;
@@ -123,17 +155,17 @@ export function SiteNavigation() {
 
   useEffect(() => {
     function onPointer(event: PointerEvent) {
-      if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
+      if (!openDropdown) return;
+      const root = dropdownConfig[openDropdown].rootRef.current;
+      if (root && !root.contains(event.target as Node)) setOpenDropdown(null);
     }
 
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape" && dropdownOpen) {
-        event.preventDefault();
-        setDropdownOpen(false);
-        dropdownTriggerRef.current?.focus();
-      }
+      if (event.key !== "Escape" || !openDropdown) return;
+      event.preventDefault();
+      const trigger = dropdownConfig[openDropdown].triggerRef.current;
+      setOpenDropdown(null);
+      trigger?.focus();
     }
 
     document.addEventListener("pointerdown", onPointer);
@@ -142,80 +174,85 @@ export function SiteNavigation() {
       document.removeEventListener("pointerdown", onPointer);
       document.removeEventListener("keydown", onKey);
     };
-  }, [dropdownOpen]);
+  }, [openDropdown]);
 
-  const serviceActive = serviceNavigation.some((item) => isActive(pathname, item.href));
+  function renderDesktopDropdown(id: Exclude<DropdownId, null>) {
+    const config = dropdownConfig[id];
+    const active = groupIsActive(pathname, config.items);
+    const isOpen = openDropdown === id;
+
+    return (
+      <div
+        className="nav-dropdown"
+        ref={config.rootRef}
+        data-state={isOpen ? "open" : "closed"}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenDropdown(null);
+        }}
+      >
+        <button
+          id={config.triggerId}
+          ref={config.triggerRef}
+          type="button"
+          className={active ? "is-active" : undefined}
+          data-active={active ? "true" : undefined}
+          aria-expanded={isOpen}
+          aria-controls={config.panelId}
+          onClick={() => setOpenDropdown((value) => (value === id ? null : id))}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown") {
+              event.preventDefault();
+              openDropdownAndFocus(id, "first");
+            } else if (event.key === "ArrowUp") {
+              event.preventDefault();
+              openDropdownAndFocus(id, "last");
+            }
+          }}
+        >
+          <span>{config.label}</span>
+          {active ? <span className="sr-only">, nykyinen osio</span> : null}
+          <Icon name="chevron" />
+        </button>
+
+        {isOpen ? (
+          <div
+            id={config.panelId}
+            className="nav-dropdown__panel"
+            role="region"
+            aria-labelledby={config.triggerId}
+            onKeyDown={(event) => {
+              const links = dropdownLinks(id);
+              const currentIndex = links.indexOf(document.activeElement as HTMLAnchorElement);
+              if (event.key === "ArrowDown") {
+                event.preventDefault();
+                links[(currentIndex + 1 + links.length) % links.length]?.focus();
+              } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                links[(currentIndex - 1 + links.length) % links.length]?.focus();
+              } else if (event.key === "Home") {
+                event.preventDefault();
+                links[0]?.focus();
+              } else if (event.key === "End") {
+                event.preventDefault();
+                links.at(-1)?.focus();
+              }
+            }}
+          >
+            {config.items.map((item) => (
+              <NavLink key={item.href} {...item} onNavigate={() => setOpenDropdown(null)} />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <>
       <nav className="desktop-nav" aria-label="Päänavigaatio">
-        <div
-          className="nav-dropdown"
-          ref={dropdownRef}
-          data-state={dropdownOpen ? "open" : "closed"}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-              setDropdownOpen(false);
-            }
-          }}
-        >
-          <button
-            id="desktop-service-trigger"
-            ref={dropdownTriggerRef}
-            type="button"
-            className={serviceActive ? "is-active" : undefined}
-            data-active={serviceActive ? "true" : undefined}
-            aria-expanded={dropdownOpen}
-            aria-controls="desktop-service-menu"
-            onClick={() => setDropdownOpen((value) => !value)}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                openDropdownAndFocus("first");
-              } else if (event.key === "ArrowUp") {
-                event.preventDefault();
-                openDropdownAndFocus("last");
-              }
-            }}
-          >
-            <span>Palvelut</span>
-            {serviceActive ? <span className="sr-only">, nykyinen osio</span> : null}
-            <Icon name="chevron" />
-          </button>
-
-          {dropdownOpen ? (
-            <div
-              id="desktop-service-menu"
-              className="nav-dropdown__panel"
-              role="region"
-              aria-labelledby="desktop-service-trigger"
-              onKeyDown={(event) => {
-                const links = dropdownLinks();
-                const currentIndex = links.indexOf(document.activeElement as HTMLAnchorElement);
-
-                if (event.key === "ArrowDown") {
-                  event.preventDefault();
-                  links[(currentIndex + 1 + links.length) % links.length]?.focus();
-                } else if (event.key === "ArrowUp") {
-                  event.preventDefault();
-                  links[(currentIndex - 1 + links.length) % links.length]?.focus();
-                } else if (event.key === "Home") {
-                  event.preventDefault();
-                  links[0]?.focus();
-                } else if (event.key === "End") {
-                  event.preventDefault();
-                  links.at(-1)?.focus();
-                }
-              }}
-            >
-              {serviceNavigation.map((item) => (
-                <NavLink key={item.href} {...item} onNavigate={() => setDropdownOpen(false)} />
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {siteNavigation.slice(1).map((item) => (
+        {renderDesktopDropdown("electrical")}
+        {renderDesktopDropdown("lighting")}
+        {siteNavigation.slice(2).map((item) => (
           <NavLink key={item.href} href={item.href} label={item.label} />
         ))}
         <ButtonLink href="/yhteystiedot#yhteydenotto" className="header-cta">
@@ -266,11 +303,15 @@ export function SiteNavigation() {
             </div>
 
             <nav aria-label="Mobiilinavigaatio">
-              <p className="mobile-nav-label">Palvelut</p>
-              {serviceNavigation.map((item) => (
+              <p className="mobile-nav-label">Sähkötyöt</p>
+              {electricalNavigation.map((item) => (
                 <NavLink key={item.href} {...item} onNavigate={() => closeDrawer(false)} />
               ))}
-              {siteNavigation.slice(1).map((item) => (
+              <p className="mobile-nav-label">Valaisimet</p>
+              {lightingNavigation.map((item) => (
+                <NavLink key={item.href} {...item} onNavigate={() => closeDrawer(false)} />
+              ))}
+              {siteNavigation.slice(2).map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} onNavigate={() => closeDrawer(false)} />
               ))}
             </nav>
