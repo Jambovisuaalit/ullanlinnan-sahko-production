@@ -5,7 +5,6 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ServiceCard } from "@/components/ui/ServiceCard";
 
 const priorityServices = [
-  { label: "Pienet sähkötyöt Helsinki", href: "/pienet-sahkotyot-helsinki" },
   { label: "Sähkömies Ullanlinna", href: "/sahkomies-ullanlinna" },
   { label: "Vanhan valaisimen sähköistys", href: "/vanhan-valaisimen-sahkoistys" },
   { label: "Valaisimen johdon vaihto", href: "/valaisimen-johdon-vaihto" },
