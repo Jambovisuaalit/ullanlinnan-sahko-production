@@ -83,11 +83,12 @@ if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 8) {
 const navigationSource = await readFile(path.join(root, "src/components/layout/SiteNavigation.tsx"), "utf8");
 for (const requirement of [
   'const DESKTOP_MEDIA_QUERY = "(min-width: 68rem)"',
-  "aria-expanded={dropdownOpen}",
-  "{dropdownOpen ? (",
-  "setDropdownOpen(false)",
-  'aria-controls="desktop-service-menu"',
-  'data-state={dropdownOpen ? "open" : "closed"}',
+  'aria-label="Päänavigaatio"',
+  "siteNavigation.map",
+  "aria-expanded={drawerOpen}",
+  "{drawerOpen ? (",
+  "setDrawerOpen(false)",
+  'aria-controls="mobile-navigation"',
   'desktopQuery.addEventListener("change", syncNavigationMode)',
   'role="dialog"',
   'aria-modal="true"',
@@ -99,15 +100,30 @@ for (const requirement of [
   }
 }
 
-if (navigationSource.includes('hidden={!dropdownOpen}')) {
-  errors.push("Desktop service dropdown must be conditionally rendered instead of relying on CSS to hide a mounted panel.");
+for (const retiredDesktopDropdownPattern of [
+  "dropdownOpen",
+  'aria-controls="desktop-service-menu"',
+  'id="desktop-service-menu"'
+]) {
+  if (navigationSource.includes(retiredDesktopDropdownPattern)) {
+    errors.push(`SiteNavigation still contains retired desktop dropdown logic: ${retiredDesktopDropdownPattern}`);
+  }
+}
+
+const navigationContent = await readFile(path.join(root, "src/content/navigation.ts"), "utf8");
+for (const label of ["Sähkötyöt", "Valaisimet", "Myymälä", "Meistä", "Yhteystiedot"]) {
+  if (!navigationContent.includes(`label: "${label}"`)) {
+    errors.push(`Approved primary navigation is missing label: ${label}`);
+  }
+}
+if (navigationContent.includes('label: "Pienet sähkötyöt"')) {
+  errors.push("Retired 'Pienet sähkötyöt' label must not appear in primary navigation.");
 }
 
 const componentsCss = await readFile(path.join(root, "src/styles/components.css"), "utf8");
 for (const requirement of [
   "[hidden]",
   "display: none !important",
-  '.nav-dropdown[data-state="closed"] > .nav-dropdown__panel',
   "height: 100dvh",
   "env(safe-area-inset-bottom)",
   ".mobile-drawer-layer",
@@ -203,7 +219,7 @@ if (await exists("playwright.config.ts")) {
 
 if (await exists("tests/visual/frontend.visual.spec.ts")) {
   const visualSpec = await readFile(path.join(root, "tests/visual/frontend.visual.spec.ts"), "utf8");
-  for (const requirement of ["toHaveScreenshot", "scrollWidth", "desktop-service-menu", "mobile-navigation"]) {
+  for (const requirement of ["toHaveScreenshot", "scrollWidth", "mobile-navigation", "Sähkötyöt", "Avaa sivuston valikko"]) {
     if (!visualSpec.includes(requirement)) errors.push(`Visual regression spec is missing: ${requirement}`);
   }
 }
