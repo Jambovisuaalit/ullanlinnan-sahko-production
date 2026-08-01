@@ -36,6 +36,8 @@ const mediaIcons: Record<string, IconName> = {
   "taloyhtioiden-sahkotyot-helsinki": "building"
 };
 
+const retiredSmallElectricalPath = "/pienet-sahkotyot-helsinki";
+
 export function ServicePage({ content, seo, serviceType }: { content: ServiceContent; seo: SeoPage; serviceType: string }) {
   const mediaIcon = mediaIcons[content.slug] ?? "bulb";
   const attachmentsEnabled = process.env.NEXT_PUBLIC_ENABLE_CONTACT_ATTACHMENTS === "true";
@@ -43,6 +45,7 @@ export function ServicePage({ content, seo, serviceType }: { content: ServiceCon
     content.slug === "sahkoasennukset-ja-vikakorjaukset" &&
     process.env.NEXT_PUBLIC_ENABLE_PRICING === "true" &&
     Boolean(process.env.ELECTRICIAN_HOURLY_RATE_DISPLAY?.trim());
+  const relatedServices = content.related.filter((item) => item.href !== retiredSmallElectricalPath);
 
   return <main id="main-content">
     <Breadcrumbs items={[{ name: "Etusivu", href: "/" }, { name: content.title, href: `/${content.slug}` }]}/>
@@ -63,7 +66,7 @@ export function ServicePage({ content, seo, serviceType }: { content: ServiceCon
 
     <section id="yhteydenotto" className="contact-section"><div className="container contact-layout"><div className="contact-copy"><SectionHeader eyebrow="Yhteydenotto" title={content.primaryCta}/><p>{attachmentsEnabled ? "Kerro tarve, kohde ja mahdolliset havainnot. Liitä kuvat, jos ne auttavat arvioinnissa." : "Kerro tarve, kohde ja mahdolliset havainnot mahdollisimman selkeästi."}</p></div><div className="contact-card"><ContactForm defaultTopic={topics[content.slug]}/></div></div></section>
 
-    <section className="section"><div className="container"><SectionHeader eyebrow="Aiheeseen liittyvät palvelut" title="Jatka sopivaan palveluun"/><div className="related-grid">{content.related.map((item) => <ButtonLink key={item.href} href={item.href} variant="secondary" icon="arrow">{item.label}</ButtonLink>)}</div></div></section>
+    <section className="section"><div className="container"><SectionHeader eyebrow="Aiheeseen liittyvät palvelut" title="Jatka sopivaan palveluun"/><div className="related-grid">{relatedServices.map((item) => <ButtonLink key={item.href} href={item.href} variant="secondary" icon="arrow">{item.label}</ButtonLink>)}</div></div></section>
     <JsonLdScript data={serviceSchema(seo, content.title, serviceType)}/>
   </main>;
 }
