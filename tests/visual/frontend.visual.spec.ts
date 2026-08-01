@@ -162,4 +162,10 @@ test.describe("responsive visual regression", () => {
     await expect(page.locator("#contact-attachments")).toHaveCount(0);
     await expect(page.locator(".analytics-consent")).toHaveCount(0);
   });
+
+  test("retired small-electrical URL returns a permanent 301", async ({ request }) => {
+    const response = await request.get("/pienet-sahkotyot-helsinki", { maxRedirects: 0 });
+    expect(response.status()).toBe(301);
+    expect(response.headers()["location"]).toContain("/sahkoasennukset-ja-vikakorjaukset");
+  });
 });
