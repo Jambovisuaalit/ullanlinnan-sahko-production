@@ -1,27 +1,37 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const storageKey = "usoy-analytics-consent-v1";
+const consentEvent = "usoy-analytics-consent-change";
 type ConsentState = "granted" | "denied" | null;
 
-export function AnalyticsConsent({ measurementId }: { measurementId: string }) {
-  const [consent, setConsent] = useState<ConsentState>(null);
-  const [hydrated, setHydrated] = useState(false);
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener(consentEvent, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(consentEvent, callback);
+  };
+}
 
-  useEffect(() => {
-    const stored = window.localStorage.getItem(storageKey);
-    if (stored === "granted" || stored === "denied") setConsent(stored);
-    setHydrated(true);
-  }, []);
+function getSnapshot(): ConsentState {
+  const stored = window.localStorage.getItem(storageKey);
+  return stored === "granted" || stored === "denied" ? stored : null;
+}
+
+function getServerSnapshot(): ConsentState {
+  return null;
+}
+
+export function AnalyticsConsent({ measurementId }: { measurementId: string }) {
+  const consent = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   function choose(value: Exclude<ConsentState, null>) {
     window.localStorage.setItem(storageKey, value);
-    setConsent(value);
+    window.dispatchEvent(new Event(consentEvent));
   }
-
-  if (!hydrated) return null;
 
   return (
     <>
@@ -30,7 +40,7 @@ export function AnalyticsConsent({ measurementId }: { measurementId: string }) {
           <Script src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`} strategy="afterInteractive" />
           <Script id="usoy-ga4-config" strategy="afterInteractive">
             {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
+function gtag(){window.dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${measurementId}', { anonymize_ip: true });`}
           </Script>
