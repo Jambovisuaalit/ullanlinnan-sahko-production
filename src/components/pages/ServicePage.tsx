@@ -6,6 +6,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { Accordion } from "@/components/ui/Accordion";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { JsonLdScript } from "@/components/ui/JsonLd";
+import { HomePricingSection } from "@/components/sections/home/HomePricingSection";
 import type { ServiceContent } from "@/content/services";
 import type { SeoPage } from "@/content/seo";
 import { faqSchema, serviceSchema } from "@/lib/seo/schema";
@@ -39,15 +40,18 @@ const mediaIcons: Record<string, IconName> = {
 
 export function ServicePage({ content, seo, serviceType }: { content: ServiceContent; seo: SeoPage; serviceType: string }) {
   const mediaIcon = mediaIcons[content.slug] ?? "bulb";
+  const showElectricalPricing = content.slug === "sahkoasennukset-ja-vikakorjaukset";
 
   return <main id="main-content">
     <Breadcrumbs items={[{ name: "Etusivu", href: "/" }, { name: content.title, href: `/${content.slug}` }]}/>
     <section className="service-hero"><div className="container service-hero__layout"><div className="service-hero__copy"><p className="eyebrow"><span aria-hidden="true" />{content.eyebrow}</p><h1>{content.title}</h1><p className="hero-lead">{content.introduction}</p><div className="button-row"><ButtonLink href="#yhteydenotto">{content.primaryCta}</ButtonLink><ButtonLink href={contactLinks.phone} variant="secondary" icon="phone">Soita {company.phoneDisplay}</ButtonLink></div></div><MediaFrame requirement={content.mediaRequirement} fallbackTitle={content.title} icon={mediaIcon} ratio={content.mediaRatio} priority /></div></section>
-    <nav className="anchor-nav" aria-label="Sivun sisältö"><div className="container"><a href="#tilanteet">Tilanteet</a><a href="#sisalto">Sisältö</a><a href="#prosessi">Prosessi</a><a href="#lahtotiedot">Lähtötiedot</a><a href="#faq">FAQ</a><a href="#yhteydenotto">Yhteydenotto</a></div></nav>
+    <nav className="anchor-nav" aria-label="Sivun sisältö"><div className="container"><a href="#tilanteet">Tilanteet</a><a href="#sisalto">Sisältö</a>{showElectricalPricing && process.env.ELECTRICIAN_HOURLY_RATE_DISPLAY?.trim() ? <a href="#hinnasto">Hinnasto</a> : null}<a href="#prosessi">Prosessi</a><a href="#lahtotiedot">Lähtötiedot</a><a href="#faq">FAQ</a><a href="#yhteydenotto">Yhteydenotto</a></div></nav>
 
     <section id="tilanteet" className="section"><div className="container content-sidebar-layout"><div><SectionHeader eyebrow="Tarve" title={content.situationsTitle}/><div className="situation-grid">{content.situations.map((item, index) => <article key={item}><span>{String(index + 1).padStart(2, "0")}</span><p>{item}</p></article>)}</div></div><aside className="sticky-contact-card"><strong>Tarvitsetko arviota?</strong><p>Lähetä kuvaus ja mahdolliset kuvat. Kerromme, mitä seuraavaksi tarvitaan.</p><ButtonLink href="#yhteydenotto" className="button--full">{content.primaryCta}</ButtonLink><a href={contactLinks.phone}>Soita {company.phoneDisplay}</a></aside></div></section>
 
     <section id="sisalto" className="section section--secondary"><div className="container split-layout"><div className="feature-copy"><SectionHeader eyebrow="Palvelun rajaus" title={content.includedTitle}/><ul className="check-list">{content.included.map((item) => <li key={item}><Icon name="check"/>{item}</li>)}</ul><div className="safety-notice"><strong>Turvallisuus ja rajaus</strong><p>{content.safetyNotice}</p></div></div><MediaFrame requirement={content.mediaRequirement} fallbackTitle={content.title} icon={mediaIcon} ratio="16/10"/></div></section>
+
+    {showElectricalPricing ? <HomePricingSection /> : null}
 
     <section id="prosessi" className="section"><div className="container"><SectionHeader eyebrow="Toimintatapa" title="Näin asia etenee"/><ol className="process-grid process-grid--light">{content.process.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol></div></section>
 
