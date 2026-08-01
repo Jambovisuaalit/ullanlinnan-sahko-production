@@ -6,6 +6,8 @@ import { useForm, useWatch } from "react-hook-form";
 import { contactTopicHints, contactTopicOptions } from "@/content/contact";
 import { contactSchema, type ContactFields, type ContactFormInput, validateFiles } from "@/lib/contact-schema";
 
+const attachmentsEnabled = process.env.NEXT_PUBLIC_ENABLE_CONTACT_ATTACHMENTS === "true";
+
 type SubmissionResponse = {
   ok?: boolean;
   mode?: "live" | "demo" | "ignored";
@@ -74,6 +76,12 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
   }
 
   function onFilesSelected(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!attachmentsEnabled) {
+      setFiles([]);
+      setFileError("");
+      return;
+    }
+
     const selectedFiles = Array.from(event.target.files ?? []);
     const validation = validateFiles(selectedFiles);
     setFiles(selectedFiles);
@@ -83,12 +91,14 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
   async function submit(values: ContactFields) {
     if (status === "submitting") return;
 
-    const validation = validateFiles(files);
-    if (validation) {
-      setFileError(validation);
-      setStatus("error");
-      focusSummary();
-      return;
+    if (attachmentsEnabled) {
+      const validation = validateFiles(files);
+      if (validation) {
+        setFileError(validation);
+        setStatus("error");
+        focusSummary();
+        return;
+      }
     }
 
     setStatus("submitting");
@@ -97,7 +107,7 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
 
     const body = new FormData();
     Object.entries(values).forEach(([key, value]) => body.append(key, String(value)));
-    files.forEach((file) => body.append("attachments", file));
+    if (attachmentsEnabled) files.forEach((file) => body.append("attachments", file));
 
     try {
       const response = await fetch("/api/contact", { method: "POST", body });
@@ -116,6 +126,7 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
       const messageByReason: Record<string, string> = {
         rate_limited: "Lomake lähetettiin liian nopeasti. Odota hetki ja yritä uudelleen.",
         payload_too_large: "Liitteiden yhteiskoko on liian suuri. Pienennä tiedostoja ja yritä uudelleen.",
+        attachments_disabled: "Liitteiden lähetys ei ole käytössä. Lähetä yhteydenotto ilman liitteitä.",
         transport_not_configured: "Lomakkeen lähetys ei ole vielä käytössä. Ota yhteyttä puhelimitse tai sähköpostilla."
       };
 
@@ -167,7 +178,7 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
             {Object.entries(errors).map(([key, value]) => (
               <li key={key}><a href={`#contact-${key}`}>{value?.message}</a></li>
             ))}
-            {fileError ? <li><a href="#contact-attachments">{fileError}</a></li> : null}
+            {attachmentsEnabled && fileError ? <li><a href="#contact-attachments">{fileError}</a></li> : null}
           </ul>
         </div>
       ) : null}
@@ -244,33 +255,35 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
           <span id="contact-message-count" className="field-count">{message.length} / 4000</span>
         </Field>
 
-        <Field
-          label="Kuvat tai PDF"
-          optional
-          id="contact-attachments"
-          error={fileError}
-          help="Enintään 3 tiedostoa, 5 Mt/tiedosto. JPG, PNG, WebP tai PDF."
-        >
-          <div className="file-field">
-            <input
-              id="contact-attachments"
-              name="attachments"
-              type="file"
-              multiple
-              accept="image/jpeg,image/png,image/webp,application/pdf"
-              aria-describedby={[fileError ? "contact-attachments-error" : null, "contact-attachments-help"]
-                .filter(Boolean)
-                .join(" ")}
-              onChange={onFilesSelected}
-            />
-            <span>Valitse kuvat tai PDF-tiedostot</span>
-          </div>
-          {files.length ? (
-            <ul className="file-list" aria-label="Valitut liitteet">
-              {files.map((file) => <li key={`${file.name}-${file.size}`}>{file.name}</li>)}
-            </ul>
-          ) : null}
-        </Field>
+        {attachmentsEnabled ? (
+          <Field
+            label="Kuvat tai PDF"
+            optional
+            id="contact-attachments"
+            error={fileError}
+            help="Enintään 3 tiedostoa, 5 Mt/tiedosto. JPG, PNG, WebP tai PDF."
+          >
+            <div className="file-field">
+              <input
+                id="contact-attachments"
+                name="attachments"
+                type="file"
+                multiple
+                accept="image/jpeg,image/png,image/webp,application/pdf"
+                aria-describedby={[fileError ? "contact-attachments-error" : null, "contact-attachments-help"]
+                  .filter(Boolean)
+                  .join(" ")}
+                onChange={onFilesSelected}
+              />
+              <span>Valitse kuvat tai PDF-tiedostot</span>
+            </div>
+            {files.length ? (
+              <ul className="file-list" aria-label="Valitut liitteet">
+                {files.map((file) => <li key={`${file.name}-${file.size}`}>{file.name}</li>)}
+              </ul>
+            ) : null}
+          </Field>
+        ) : null}
 
         <label className="checkbox-field" htmlFor="contact-consent">
           <input
