@@ -1,6 +1,26 @@
-# Ullanlinnan Sähkö Oy – tuotantofrontend
+# Ullanlinnan Sähkö Oy – kanoninen verkkosivusto
 
-Next.js App Router-, React- ja TypeScript-toteutus Ullanlinnan Sähkö Oy:n hyväksytyn design- ja sisältöjärjestelmän pohjalta.
+Tämä repository on Ullanlinnan Sähkö Oy:n **ainoa aktiivinen frontend-lähdetotuus**.
+
+- Aktiivinen haara: `main`
+- Preview-lähdetotuus: `main`
+- Teknologia: Next.js App Router + React + TypeScript
+- Vercel-preview: `ullanlinnan-sahko-client-preview`
+- Vanhoja `ullanlinnan-sahko` / `ullanlinnan-sahko-v2` -repoja ei käytetä jatkokehitykseen tai deployhin.
+
+## Preview-status 1.8.2026
+
+`main` sisältää asiakkaalle kokeiltavan preview-version:
+
+- responsiivinen desktop- ja mobiilinavigaatio
+- kevennetty päävalikko: Sähkötyöt / Valaisimet / Myymälä / Meistä / Yhteystiedot
+- sähkö-, valaistus-, valaisinkorjaus-, myymälä- ja B2B-polut
+- preview-turvallinen yhteydenottolomake
+- hyväksytty V04-logo ja faviconit
+- brändätyt mediapinnat ilman sisäisiä tuotantopaikkamerkintöjä
+- vanha `/pienet-sahkotyot-helsinki` ohjataan sähköasennukset-sivulle eikä sitä sisällytetä sitemap-indeksointiin
+
+Vahvistamattomia tuntihintoja tai keksittyjä yrityskuvia ei näytetä previewssä.
 
 ## Teknologia
 
@@ -32,8 +52,6 @@ Tuotantobuild:
 npm run build
 ```
 
-Tuotantobuild vaatii lopullisen canonical-domainin, lomakkeen HTTPS-vastaanottajan sekä hyväksytyn ikonikirjaston.
-
 ## Rakenne
 
 ```text
@@ -49,13 +67,16 @@ src/
 
 V04 Header Compact- ja favicon-exportit sijaitsevat muuttamattomina `public/brand/`-hakemistossa. Niiden eheys on dokumentoitu tiedostossa `docs/V04_INTEGRATED_ASSETS_SHA256.txt`.
 
-Avoin tuotantoportti:
+## Julkaisuportti lopulliseen tuotantoon
 
-```text
-public/brand/icons/USOY_ICON_SPRITE.svg
-```
+Preview ei tarkoita vielä lopullista handoffia. Ennen tuotantodomainia lisätään:
 
-Puuttuvaa ikonikirjastoa ei rekonstruoida tai korvata toisella ikoniperheellä.
+1. Hannan vahvistamat tuntihinnat
+2. Hannan aidot yritys- ja myymäläkuvat
+3. lopullinen mobiili- ja desktop-QA
+4. lopullinen domain + canonicalit
+5. lomakkeen tuotantolähetys
+6. kirjallinen asiakashyväksyntä
 
 ## Dokumentaatio
 
