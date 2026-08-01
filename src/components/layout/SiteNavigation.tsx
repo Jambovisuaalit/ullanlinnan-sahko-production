@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { serviceNavigation, siteNavigation } from "@/content/navigation";
+import { siteNavigation } from "@/content/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
@@ -41,46 +41,24 @@ function NavLink({
 
 export function SiteNavigation() {
   const pathname = usePathname();
-
   return <SiteNavigationState key={pathname} pathname={pathname} />;
 }
 
 function SiteNavigationState({ pathname }: { pathname: string }) {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
   const drawerTriggerRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  function dropdownLinks() {
-    return Array.from(dropdownRef.current?.querySelectorAll<HTMLAnchorElement>(".nav-dropdown__panel a") ?? []);
-  }
-
-  function openDropdownAndFocus(position: "first" | "last") {
-    setDropdownOpen(true);
-    requestAnimationFrame(() => {
-      const links = dropdownLinks();
-      (position === "first" ? links[0] : links.at(-1))?.focus();
-    });
-  }
-
   const closeDrawer = useCallback((restoreFocus = true) => {
     setDrawerOpen(false);
-    if (restoreFocus) {
-      requestAnimationFrame(() => drawerTriggerRef.current?.focus());
-    }
+    if (restoreFocus) requestAnimationFrame(() => drawerTriggerRef.current?.focus());
   }, []);
 
   useEffect(() => {
     const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
-
     function syncNavigationMode(event?: MediaQueryListEvent) {
-      const desktop = event?.matches ?? desktopQuery.matches;
-      if (desktop) setDrawerOpen(false);
-      else setDropdownOpen(false);
+      if (event?.matches ?? desktopQuery.matches) setDrawerOpen(false);
     }
-
     syncNavigationMode();
     desktopQuery.addEventListener("change", syncNavigationMode);
     return () => desktopQuery.removeEventListener("change", syncNavigationMode);
@@ -102,16 +80,15 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
         closeDrawer(true);
         return;
       }
-
       if (event.key !== "Tab") return;
-      const focusable = Array.from(
-        root!.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-      ).filter((element) => !element.hasAttribute("hidden"));
 
+      const focusable = Array.from(
+        root.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      ).filter((element) => !element.hasAttribute("hidden"));
       if (!focusable.length) return;
+
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -130,101 +107,10 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
     };
   }, [closeDrawer, drawerOpen]);
 
-  useEffect(() => {
-    function onPointer(event: PointerEvent) {
-      if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    }
-
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape" && dropdownOpen) {
-        event.preventDefault();
-        setDropdownOpen(false);
-        dropdownTriggerRef.current?.focus();
-      }
-    }
-
-    document.addEventListener("pointerdown", onPointer);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("pointerdown", onPointer);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [dropdownOpen]);
-
-  const serviceActive = serviceNavigation.some((item) => isActive(pathname, item.href));
-
   return (
     <>
       <nav className="desktop-nav" aria-label="Päänavigaatio">
-        <div
-          className="nav-dropdown"
-          ref={dropdownRef}
-          data-state={dropdownOpen ? "open" : "closed"}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-              setDropdownOpen(false);
-            }
-          }}
-        >
-          <button
-            id="desktop-service-trigger"
-            ref={dropdownTriggerRef}
-            type="button"
-            className={serviceActive ? "is-active" : undefined}
-            data-active={serviceActive ? "true" : undefined}
-            aria-expanded={dropdownOpen}
-            aria-controls="desktop-service-menu"
-            onClick={() => setDropdownOpen((value) => !value)}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                openDropdownAndFocus("first");
-              } else if (event.key === "ArrowUp") {
-                event.preventDefault();
-                openDropdownAndFocus("last");
-              }
-            }}
-          >
-            <span>Palvelut</span>
-            {serviceActive ? <span className="sr-only">, nykyinen osio</span> : null}
-            <Icon name="chevron" />
-          </button>
-
-          {dropdownOpen ? (
-            <div
-              id="desktop-service-menu"
-              className="nav-dropdown__panel"
-              role="region"
-              aria-labelledby="desktop-service-trigger"
-              onKeyDown={(event) => {
-                const links = dropdownLinks();
-                const currentIndex = links.indexOf(document.activeElement as HTMLAnchorElement);
-
-                if (event.key === "ArrowDown") {
-                  event.preventDefault();
-                  links[(currentIndex + 1 + links.length) % links.length]?.focus();
-                } else if (event.key === "ArrowUp") {
-                  event.preventDefault();
-                  links[(currentIndex - 1 + links.length) % links.length]?.focus();
-                } else if (event.key === "Home") {
-                  event.preventDefault();
-                  links[0]?.focus();
-                } else if (event.key === "End") {
-                  event.preventDefault();
-                  links.at(-1)?.focus();
-                }
-              }}
-            >
-              {serviceNavigation.map((item) => (
-                <NavLink key={item.href} {...item} pathname={pathname} onNavigate={() => setDropdownOpen(false)} />
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {siteNavigation.slice(1).map((item) => (
+        {siteNavigation.map((item) => (
           <NavLink key={item.href} href={item.href} label={item.label} pathname={pathname} />
         ))}
         <ButtonLink href="/yhteystiedot#yhteydenotto" className="header-cta">
@@ -275,11 +161,7 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
             </div>
 
             <nav aria-label="Mobiilinavigaatio">
-              <p className="mobile-nav-label">Palvelut</p>
-              {serviceNavigation.map((item) => (
-                <NavLink key={item.href} {...item} pathname={pathname} onNavigate={() => closeDrawer(false)} />
-              ))}
-              {siteNavigation.slice(1).map((item) => (
+              {siteNavigation.map((item) => (
                 <NavLink
                   key={item.href}
                   href={item.href}
