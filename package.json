@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "check": "npm run validate:content && npm run validate:frontend && npm run typecheck && npm run lint",
+    "test:contact:e2e": "playwright test tests/visual/contact-form.e2e.spec.ts --project=desktop-1440",
     "test:visual": "playwright test tests/visual",
     "test:visual:update": "playwright test tests/visual --update-snapshots",
     "test:visual:install": "playwright install --with-deps chromium",

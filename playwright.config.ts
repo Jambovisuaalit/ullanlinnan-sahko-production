@@ -32,7 +32,7 @@ export default defineConfig({
     screenshot: "only-on-failure"
   },
   webServer: {
-    command: `npm run build:preview && npm run start -- -p ${port}`,
+    command: `npm run build:preview && CONTACT_FORM_DEMO_MODE=true npm run start -- -p ${port}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000
