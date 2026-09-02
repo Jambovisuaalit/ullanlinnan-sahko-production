@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1080" role="img" aria-labelledby="t d">
+<title id="t">Valaisin- ja sähkötarvikemyymälän kuvitus</title><desc id="d">Brändin mukainen myymäläkuvitus hyllyistä, valaisimista ja sähkötarvikkeista.</desc>
+<rect width="1440" height="1080" fill="#E9E1D3"/>
+<rect x="96" y="110" width="1248" height="830" fill="#FBF9F5" stroke="#1A1A1A" stroke-width="4"/>
+<g stroke="#1A1A1A" stroke-width="5" fill="none"><path d="M180 716h1080M180 518h1080"/></g>
+<g>
+<rect x="206" y="548" width="214" height="136" fill="#D4A359"/><rect x="460" y="548" width="248" height="136" fill="#4A554A"/>
+<rect x="748" y="548" width="190" height="136" fill="#E9E1D3" stroke="#1A1A1A" stroke-width="4"/>
+<rect x="978" y="548" width="256" height="136" fill="#1A1A1A"/>
+</g>
+<g fill="none" stroke="#1A1A1A" stroke-width="7">
+<path d="M330 110v120M720 110v170M1105 110v106"/>
+<path d="M244 230h172l-26 92H270z" fill="#4A554A"/>
+<path d="M625 280h190l-30 102H655z" fill="#D4A359"/>
+<path d="M1020 216h170l-28 94h-114z" fill="#E9E1D3"/>
+</g>
+<g fill="#1A1A1A"><circle cx="286" cy="814" r="34"/><circle cx="382" cy="814" r="34"/><circle cx="478" cy="814" r="34"/></g>
+<g stroke="#4A554A" stroke-width="16" stroke-linecap="round"><path d="M686 798h176"/><path d="M686 848h260"/></g>
+</svg>
