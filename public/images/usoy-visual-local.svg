@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1080" role="img" aria-labelledby="t d">
+<title id="t">Paikallisen yrityksen kuvitus</title><desc id="d">Helsinkiläistä kivijalkaympäristöä ja valaisinliikettä kuvaava abstrakti kuvitus.</desc>
+<rect width="1440" height="1080" fill="#FBF9F5"/>
+<rect y="760" width="1440" height="320" fill="#E9E1D3"/>
+<g fill="none" stroke="#1A1A1A" stroke-width="6">
+<path d="M170 760V210h1100v550"/><path d="M170 330h1100"/><path d="M404 210v550M776 210v550M1040 210v550"/>
+<rect x="470" y="430" width="240" height="330"/><rect x="840" y="430" width="150" height="210"/>
+</g>
+<g fill="#D4A359"><rect x="840" y="670" width="278" height="90"/><circle cx="1135" cy="466" r="42"/></g>
+<g fill="#4A554A"><rect x="198" y="386" width="180" height="120"/><rect x="198" y="548" width="180" height="120"/></g>
+<path d="M80 870h1280" stroke="#1A1A1A" stroke-width="6"/>
+<path d="M1030 878c0-92 72-166 160-166s160 74 160 166" fill="none" stroke="#4A554A" stroke-width="18"/>
+</svg>
