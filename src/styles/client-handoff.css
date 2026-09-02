@@ -9,6 +9,11 @@
   display: none !important;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 /* Header: compact, predictable and asset-safe on phones. */
 .brand-link,
 .brand-logo {
@@ -87,6 +92,17 @@
 
   .hero-media {
     display: none;
+  }
+
+  /* Do not show generated/fallback brand panels to the customer on phones.
+     Real image media remains available when a real src is provided. */
+  figure.media-frame:has(.media-brand-panel),
+  figure.media-frame:has(.media-requirement),
+  .split-layout > .media-frame:has(.media-brand-panel),
+  .split-layout > .media-frame:has(.media-requirement),
+  .media-detail-stack:has(.media-brand-panel),
+  .media-detail-stack:has(.media-requirement) {
+    display: none !important;
   }
 
   /* Home already contains primary contact CTAs. Removing the fixed bar there
