@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1080" role="img" aria-labelledby="t d">
+<title id="t">Valaistuksen kuvitus</title><desc id="d">Abstrakti kuvitus useista riippuvalaisimista ja lämpimästä valosta.</desc>
+<rect width="1440" height="1080" fill="#FBF9F5"/>
+<rect y="730" width="1440" height="350" fill="#E9E1D3"/>
+<g stroke="#1A1A1A" stroke-width="6" fill="none">
+<path d="M330 0v250M720 0v174M1110 0v300"/>
+<path d="M220 250h220l-34 116H254z" fill="#4A554A"/>
+<path d="M610 174h220l-28 98H638z" fill="#D4A359"/>
+<path d="M998 300h224l-42 134h-140z" fill="#1A1A1A"/>
+</g>
+<g fill="#D4A359" opacity=".22">
+<path d="M254 366h152l124 430H130z"/><path d="M638 272h164l128 524H510z"/><path d="M1040 434h140l145 362H895z"/>
+</g>
+<g fill="none" stroke="#1A1A1A" stroke-width="3" opacity=".35"><circle cx="720" cy="590" r="330"/><circle cx="720" cy="590" r="230"/></g>
+<path d="M110 900h620M110 944h442" stroke="#1A1A1A" stroke-width="5"/>
+</svg>
