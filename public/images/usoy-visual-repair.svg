@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1080" role="img" aria-labelledby="t d">
+<title id="t">Valaisimen korjauksen kuvitus</title><desc id="d">Työpöytää, valaisimen osia, johtoa ja korjaustyökaluja kuvaava abstrakti kuvitus.</desc>
+<rect width="1440" height="1080" fill="#4A554A"/>
+<rect x="96" y="120" width="1248" height="820" rx="8" fill="#566256" stroke="#D4A359" stroke-width="4"/>
+<path d="M96 706h1248" stroke="#D4A359" stroke-width="5"/>
+<g transform="translate(200 240)" fill="none" stroke="#FBF9F5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M85 0v145"/><path d="M0 145h170l-28 92H28z"/><path d="M85 237v54"/>
+<circle cx="85" cy="330" r="38"/><path d="M85 368v98"/>
+</g>
+<g transform="translate(570 260)">
+<circle cx="120" cy="120" r="92" fill="#D4A359"/><circle cx="120" cy="120" r="36" fill="#1A1A1A"/>
+<path d="M212 120h164c86 0 156 70 156 156v74" fill="none" stroke="#FBF9F5" stroke-width="12" stroke-linecap="round"/>
+<rect x="474" y="350" width="116" height="90" rx="8" fill="#1A1A1A" stroke="#FBF9F5" stroke-width="5"/>
+</g>
+<g transform="translate(250 770)" stroke="#FBF9F5" stroke-width="8" fill="none" stroke-linecap="round">
+<path d="M0 92L166 0"/><path d="M130 0l36 0 0 36"/><path d="M280 12h188"/><path d="M560 0l80 92 80-92"/>
+</g>
+</svg>
