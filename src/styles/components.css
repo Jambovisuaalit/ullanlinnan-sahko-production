@@ -552,6 +552,32 @@
   object-fit: cover;
 }
 
+.media-illustration {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-bg-secondary);
+}
+
+.media-illustration img {
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.002);
+}
+
+.media-frame[data-media-source="brand-illustration"] {
+  border-color: rgb(26 26 26 / 12%);
+  background: var(--color-bg-secondary);
+}
+
+.media-frame[data-media-source="brand-illustration"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgb(251 249 245 / 18%);
+}
+
 .media-requirement {
   height: 100%;
   min-height: inherit;
