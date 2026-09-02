@@ -1,0 +1,116 @@
+/* Client handoff hardening — keep preview presentation clean without touching domains. */
+
+/* Preview-only labels must never appear in the customer-facing layout. */
+.client-preview,
+.client-preview-badge,
+.preview-badge,
+[data-preview-badge],
+[data-client-preview] {
+  display: none !important;
+}
+
+/* Header: compact, predictable and asset-safe on phones. */
+.brand-link,
+.brand-logo {
+  min-width: 0;
+}
+
+.brand-logo {
+  display: block;
+  width: min(11rem, 48vw);
+  height: auto;
+  max-height: 2.75rem;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Fixed mobile actions get matching document clearance. */
+@media (max-width: 47.99rem) {
+  :root {
+    --header-main-height: 3.75rem;
+    --mobile-action-height: 3.5rem;
+  }
+
+  .site-header__row {
+    min-height: var(--header-main-height);
+    padding-block: 0.4rem;
+  }
+
+  .brand-logo {
+    width: min(10.25rem, 52vw);
+    max-height: 2.35rem;
+  }
+
+  .menu-trigger,
+  .icon-button {
+    width: 2.65rem;
+    height: 2.65rem;
+  }
+
+  .site-notice {
+    min-height: 2rem;
+  }
+
+  .site-notice__row {
+    min-height: 2rem;
+  }
+
+  /* The value proposition must be the first substantial content on mobile.
+     Decorative/fallback media is intentionally removed from the first viewport. */
+  .hero-section {
+    padding-block: 2rem 2.5rem;
+  }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .hero-copy h1 {
+    max-width: 12ch;
+    font-size: clamp(2.35rem, 11.5vw, 3.15rem);
+    line-height: 0.98;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: auto;
+  }
+
+  .hero-lead {
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .hero-media {
+    display: none;
+  }
+
+  /* Home already contains primary contact CTAs. Removing the fixed bar there
+     prevents Safari/Chrome browser chrome from covering hero content. */
+  body:has(.hero-section) .mobile-action-bar {
+    display: none !important;
+  }
+
+  body:has(.hero-section) {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* On inner pages keep the action bar, but reserve enough safe space. */
+  body:not(:has(.hero-section)) {
+    padding-bottom: calc(var(--mobile-action-height) + env(safe-area-inset-bottom) + 0.75rem);
+  }
+
+  body:not(:has(.hero-section)) .site-footer {
+    padding-bottom: calc(2rem + var(--mobile-action-height) + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .brand-logo {
+    width: min(9.25rem, 50vw);
+  }
+}
