@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/etusivu", destination: "/", permanent: true },
       { source: "/palvelut", destination: "/", permanent: true },
+      { source: "/pienet-sahkotyot-helsinki", destination: "/sahkoasennukset-ja-vikakorjaukset", permanent: true },
       { source: "/sahkoasennukset", destination: "/sahkoasennukset-ja-vikakorjaukset", permanent: true },
       { source: "/sahkoviat", destination: "/sahkoasennukset-ja-vikakorjaukset", permanent: true },
       { source: "/vikakorjaukset", destination: "/sahkoasennukset-ja-vikakorjaukset", permanent: true },
