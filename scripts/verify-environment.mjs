@@ -3,6 +3,7 @@ const isPreview = vercelEnv === "preview" || process.env.ALLOW_PREVIEW_ENV === "
 const explicitSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
 const vercelUrl = process.env.VERCEL_URL?.trim();
 const siteUrl = explicitSiteUrl || (vercelUrl ? `https://${vercelUrl}` : "");
+const siteIndexable = process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true";
 const webhook = process.env.CONTACT_FORM_WEBHOOK_URL?.trim();
 const resendKey = process.env.RESEND_API_KEY?.trim();
 const resendFrom = process.env.CONTACT_FORM_FROM?.trim();
@@ -25,6 +26,14 @@ if (!isValidHttps(siteUrl)) {
 
 if (!isPreview && (!explicitSiteUrl || isPlaceholder(explicitSiteUrl))) {
   failures.push("Production requires the final HTTPS NEXT_PUBLIC_SITE_URL.");
+}
+
+if (isPreview && siteIndexable) {
+  failures.push("NEXT_PUBLIC_SITE_INDEXABLE must remain false in Preview deployments.");
+}
+
+if (siteIndexable && (!explicitSiteUrl || isPlaceholder(explicitSiteUrl))) {
+  failures.push("Indexing requires the final HTTPS NEXT_PUBLIC_SITE_URL.");
 }
 
 const hasResendTransport = Boolean(resendKey && resendFrom && resendRecipient);
