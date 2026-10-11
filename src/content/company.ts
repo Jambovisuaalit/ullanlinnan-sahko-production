@@ -7,7 +7,7 @@ export const company = {
   phoneE164: "+358405743094",
   email: "hanna.haapalainen1@gmail.com",
   address: { street: "Pietarinkatu 21", postalCode: "00150", city: "Helsinki", countryCode: "FI" },
-  openingHours: { display: "Keskiviikkoisin klo 10–17", dayOfWeek: "https://schema.org/Wednesday", opens: "10:00", closes: "17:00" }
+  openingHours: { display: "Keskiviikkoisin klo 09–17", dayOfWeek: "https://schema.org/Wednesday", opens: "09:00", closes: "17:00" }
 } as const;
 
 export const contactLinks = {
