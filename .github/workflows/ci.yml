@@ -32,6 +32,8 @@ jobs:
         run: npm run check
       - name: Build preview artifact
         run: npm run build:ci
+      - name: Build public soft-launch artifact
+        run: npm run build:production:check
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Contact form and route E2E smoke tests
