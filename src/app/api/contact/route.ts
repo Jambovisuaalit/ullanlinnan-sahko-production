@@ -25,6 +25,9 @@ function attachmentsEnabled() {
 
 export async function POST(request: Request) {
   try {
+    if (process.env.NEXT_PUBLIC_ENABLE_CONTACT_FORM !== "true") {
+      return NextResponse.json({ ok: false, code: "contact_form_disabled" }, { status: 410 });
+    }
     const contentLength = Number(request.headers.get("content-length") ?? 0);
     if (contentLength > maxRequestBytes) {
       return NextResponse.json({ ok: false, code: "payload_too_large" }, { status: 413 });
