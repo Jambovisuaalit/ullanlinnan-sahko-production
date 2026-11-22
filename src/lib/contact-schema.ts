@@ -8,7 +8,7 @@ export const contactSchema = z.object({
   address: z.string().trim().max(200).optional(),
   message: z.string().trim().min(10, "Kuvaile tarvetta vähintään 10 merkillä.").max(4000, "Viesti on liian pitkä."),
   consent: z.boolean().refine((value) => value, { message: "Hyväksy tietojen käsittely yhteydenottoa varten." }),
-  website: z.string().max(0).optional(),
+  website: z.string().max(200).optional(),
   startedAt: z.coerce.number().int().positive()
 });
 export type ContactFormInput = z.input<typeof contactSchema>;
