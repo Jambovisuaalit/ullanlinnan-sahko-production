@@ -15,7 +15,7 @@ concurrency:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       NEXT_PUBLIC_SITE_URL: https://preview.invalid
       CONTACT_FORM_WEBHOOK_URL: https://preview.invalid/contact
@@ -25,9 +25,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - name: Install dependencies
-        run: npm install --no-fund
+          cache: npm
+      - name: Install dependencies from lockfile
+        run: npm ci --no-fund
       - name: Validate and typecheck
         run: npm run check
       - name: Build preview artifact
         run: npm run build:ci
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Contact form E2E smoke test
+        run: npm run test:contact:e2e
