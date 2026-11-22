@@ -140,15 +140,18 @@ export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["to
 
   if (status === "success") {
     const isDemo = submission?.mode === "demo";
+    const isIgnored = submission?.mode === "ignored";
     return (
       <div className="contact-form-success" role="status" aria-live="polite">
         <span className="contact-form-success__mark" aria-hidden="true">✓</span>
         <p className="eyebrow"><span aria-hidden="true" />Valmis</p>
-        <h3>{isDemo ? "Demolähetys onnistui" : "Yhteydenotto lähetettiin"}</h3>
+        <h3>{isDemo ? "Demolähetys onnistui" : isIgnored ? "Pyyntö käsiteltiin" : "Yhteydenotto lähetettiin"}</h3>
         <p>
           {isDemo
             ? "Tämä on asiakasesikatselu, joten tietoja ei lähetetty eteenpäin. Tuotannossa sama lomake toimittaa viestin turvallisesti vastaanottajalle."
-            : "Kiitos. Palaamme asiaan annettujen tietojen perusteella."}
+            : isIgnored
+              ? "Kiitos. Pyyntö on käsitelty."
+              : "Kiitos. Palaamme asiaan annettujen tietojen perusteella."}
         </p>
         {submission?.reference ? <small>Viite: {submission.reference}</small> : null}
         <button className="button button--secondary" type="button" onClick={resetForm}>Lähetä uusi yhteydenotto</button>
