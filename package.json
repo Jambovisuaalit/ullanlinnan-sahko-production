@@ -27,7 +27,8 @@
     "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
     "start": "next start",
     "test:routes:e2e": "playwright test tests/visual/routes-and-seo.e2e.spec.ts --project=desktop-1440",
-    "test:release:e2e": "playwright test tests/visual/contact-form.e2e.spec.ts tests/visual/routes-and-seo.e2e.spec.ts --project=desktop-1440"
+    "test:release:e2e": "playwright test tests/visual/contact-form.e2e.spec.ts tests/visual/routes-and-seo.e2e.spec.ts --project=desktop-1440",
+    "build:production:check": "NEXT_PUBLIC_SITE_URL=https://ullanlinnansahko.fi NEXT_PUBLIC_SITE_INDEXABLE=false NEXT_PUBLIC_ENABLE_CONTACT_FORM=false NEXT_PUBLIC_ENABLE_CONTACT_ATTACHMENTS=false NEXT_PUBLIC_ENABLE_PRICING=false NEXT_PUBLIC_ENABLE_GA4=false NEXT_PUBLIC_ENABLE_FAQ_PAGE=false NEXT_PUBLIC_LEGAL_CONTENT_APPROVED=false CONTACT_FORM_DEMO_MODE=false npm run build"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.2.8",
