@@ -9,6 +9,7 @@ const resendKey = process.env.RESEND_API_KEY?.trim();
 const resendFrom = process.env.CONTACT_FORM_FROM?.trim();
 const resendRecipient = process.env.CONTACT_FORM_RECIPIENT?.trim();
 const demoMode = process.env.CONTACT_FORM_DEMO_MODE === "true";
+const contactFormEnabled = process.env.NEXT_PUBLIC_ENABLE_CONTACT_FORM === "true";
 const pricingEnabled = process.env.NEXT_PUBLIC_ENABLE_PRICING === "true";
 const hourlyRate = process.env.ELECTRICIAN_HOURLY_RATE_DISPLAY?.trim();
 const analyticsEnabled = process.env.NEXT_PUBLIC_ENABLE_GA4 === "true";
@@ -39,7 +40,7 @@ if (siteIndexable && (!explicitSiteUrl || isPlaceholder(explicitSiteUrl))) {
 const hasResendTransport = Boolean(resendKey && resendFrom && resendRecipient);
 const hasWebhookTransport = isValidHttps(webhook) && !isPlaceholder(webhook);
 
-if (!isPreview && !hasResendTransport && !hasWebhookTransport) {
+if (!isPreview && contactFormEnabled && !hasResendTransport && !hasWebhookTransport) {
   failures.push("Production requires a complete Resend configuration or a verified HTTPS CONTACT_FORM_WEBHOOK_URL.");
 }
 
