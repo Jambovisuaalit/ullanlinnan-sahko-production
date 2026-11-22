@@ -34,5 +34,5 @@ jobs:
         run: npm run build:ci
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
-      - name: Contact form E2E smoke test
-        run: npm run test:contact:e2e
+      - name: Contact form and route E2E smoke tests
+        run: npm run test:release:e2e
