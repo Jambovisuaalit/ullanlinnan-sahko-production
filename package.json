@@ -25,7 +25,9 @@
     "build:preview": "ALLOW_PREVIEW_ENV=true CONTACT_FORM_DEMO_MODE=true ALLOW_MISSING_BRAND_ASSETS=true NEXT_PUBLIC_SITE_URL=https://preview.invalid npm run build",
     "build:ci": "ALLOW_MISSING_BRAND_ASSETS=true npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
     "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
-    "start": "next start"
+    "start": "next start",
+    "test:routes:e2e": "playwright test tests/visual/routes-and-seo.e2e.spec.ts --project=desktop-1440",
+    "test:release:e2e": "playwright test tests/visual/contact-form.e2e.spec.ts tests/visual/routes-and-seo.e2e.spec.ts --project=desktop-1440"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.2.8",
