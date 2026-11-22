@@ -22,7 +22,7 @@
     "test:visual:update": "playwright test tests/visual --update-snapshots",
     "test:visual:install": "playwright install --with-deps chromium",
     "test:visual:report": "playwright show-report",
-    "build:preview": "ALLOW_PREVIEW_ENV=true CONTACT_FORM_DEMO_MODE=true ALLOW_MISSING_BRAND_ASSETS=true NEXT_PUBLIC_SITE_URL=https://preview.invalid npm run build",
+    "build:preview": "ALLOW_PREVIEW_ENV=true CONTACT_FORM_DEMO_MODE=true NEXT_PUBLIC_ENABLE_CONTACT_FORM=true ALLOW_MISSING_BRAND_ASSETS=true NEXT_PUBLIC_SITE_URL=https://preview.invalid npm run build",
     "build:ci": "ALLOW_MISSING_BRAND_ASSETS=true npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
     "build": "npm run verify:environment && npm run verify:assets && npm run validate:content && npm run validate:frontend && next build",
     "start": "next start",
