@@ -40,7 +40,11 @@ test("honeypot submissions are not falsely reported as sent", async ({ page }) =
     const input = element as HTMLInputElement;
     input.value = "https://spam.example";
     input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
   });
+
+  // Wait past the form's minimum submission time so the honeypot response is isolated.
+  await page.waitForTimeout(1600);
 
   const responsePromise = page.waitForResponse(
     (response) => response.url().endsWith("/api/contact") && response.request().method() === "POST"
