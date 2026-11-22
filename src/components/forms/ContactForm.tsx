@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { contactTopicHints, contactTopicOptions } from "@/content/contact";
+import { company, contactLinks } from "@/content/company";
 import { contactSchema, type ContactFields, type ContactFormInput, validateFiles } from "@/lib/contact-schema";
 
 const attachmentsEnabled = process.env.NEXT_PUBLIC_ENABLE_CONTACT_ATTACHMENTS === "true";
@@ -15,7 +16,28 @@ type SubmissionResponse = {
   code?: string;
 };
 
+const contactFormEnabled = process.env.NEXT_PUBLIC_ENABLE_CONTACT_FORM === "true";
+
 export function ContactForm({ defaultTopic }: { defaultTopic?: ContactFields["topic"] }) {
+  if (!contactFormEnabled) {
+    return (
+      <div className="contact-form contact-form--disabled" role="note">
+        <div className="form-intro">
+          <strong>Verkkolomake ei ole vielä käytössä</strong>
+          <span>Ota yhteyttä suoraan.</span>
+        </div>
+        <p>Voit soittaa tai lähettää sähköpostia. Lisää mahdolliset kuvat sähköpostiviestiin.</p>
+        <div className="button-row">
+          <a className="button button--primary" href={contactLinks.phone}>Soita {company.phoneDisplay}</a>
+          <a className="button button--secondary" href={contactLinks.email}>Lähetä sähköpostia</a>
+        </div>
+      </div>
+    );
+  }
+  return <EnabledContactForm defaultTopic={defaultTopic} />;
+}
+
+function EnabledContactForm({ defaultTopic }: { defaultTopic?: ContactFields["topic"] }) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [submission, setSubmission] = useState<SubmissionResponse | null>(null);
   const [generalError, setGeneralError] = useState("");
