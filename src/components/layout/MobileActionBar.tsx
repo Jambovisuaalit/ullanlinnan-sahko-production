@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { company, contactLinks } from "@/content/company";
 import { Icon } from "@/components/ui/Icon";
 
@@ -11,10 +12,10 @@ export function MobileActionBar() {
       <a href={contactLinks.whatsapp} target="_blank" rel="noreferrer" aria-label="Avaa WhatsApp-keskustelu">
         <span>WhatsApp</span>
       </a>
-      <a href="/#yhteydenotto" aria-label="Pyydä yhteydenottoa">
+      <Link href="/#yhteydenotto" aria-label="Pyydä yhteydenottoa">
         <Icon name="arrow" />
         <span>Pyydä apua</span>
-      </a>
+      </Link>
     </nav>
   );
 }
