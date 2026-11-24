@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { contactSchema, validateFiles } from "@/lib/contact-schema";
+import { contactSchema, quickContactSchema, validateFiles } from "@/lib/contact-schema";
 import { sendContactEmail } from "@/services/email/contact-email";
 
 export const runtime = "nodejs";
@@ -34,7 +34,8 @@ export async function POST(request: Request) {
     }
 
     const form = await request.formData();
-    const parsed = contactSchema.safeParse({
+    const schema = form.get("variant") === "quick" ? quickContactSchema : contactSchema;
+    const parsed = schema.safeParse({
       topic: form.get("topic"), name: form.get("name"), email: form.get("email"), phone: form.get("phone") || undefined,
       address: form.get("address") || undefined, message: form.get("message"), consent: form.get("consent") === "true",
       website: form.get("website") ?? "", startedAt: form.get("startedAt")
