@@ -1293,7 +1293,7 @@ input[type="file"] {
   }
 }
 
-@media (max-width: 67.99rem) {
+@media (max-width: 79.99rem) {
   .desktop-nav {
     display: none !important;
   }
@@ -1303,7 +1303,7 @@ input[type="file"] {
   }
 }
 
-@media (min-width: 68rem) {
+@media (min-width: 80rem) {
   .site-header__row {
     min-height: 4.75rem;
   }
