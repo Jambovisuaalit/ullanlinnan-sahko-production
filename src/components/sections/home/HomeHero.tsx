@@ -13,7 +13,7 @@ export function HomeHero() {
             Sähköasennukset, vikakorjaukset ja sähköalan palvelut koteihin, yrityksille ja taloyhtiöille Helsingissä ja lähialueilla.
           </p>
         </div>
-        <aside className="quick-contact-card" aria-labelledby="home-contact-heading">
+        <aside id="yhteydenotto" className="quick-contact-card" aria-labelledby="home-contact-heading">
           <h2 id="home-contact-heading">Tarvitsetko sähköasentajaa?</h2>
           <p>Jätä yhteystietosi ja kerro lyhyesti, missä tarvitset apua. Palaamme asiaan.</p>
           <QuickContactForm defaultTopic="electrical" />
