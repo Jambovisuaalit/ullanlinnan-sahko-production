@@ -470,6 +470,9 @@
 }
 
 @media (min-width: 30rem) {
+  .why-us-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .quick-contact-form__grid,
   .subcontractor-form__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -535,7 +538,7 @@
 
 .why-us-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.85rem;
   margin-block: 1.25rem;
 }
