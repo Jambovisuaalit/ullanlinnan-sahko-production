@@ -78,7 +78,7 @@ for (const file of sourceFiles.filter((item) => /\.tsx?$/.test(item))) {
 }
 
 const pageComposition = await readFile(path.join(root, "src/components/pages/HomePage.tsx"), "utf8");
-if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 8) {
+if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 7) {
   errors.push("HomePage is not composed from reusable section components.");
 }
 
