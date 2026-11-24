@@ -15,4 +15,5 @@ export const subcontractorSchema = z.object({
   startedAt: z.coerce.number().int().positive()
 });
 
+export type SubcontractorFormInput = z.input<typeof subcontractorSchema>;
 export type SubcontractorFields = z.output<typeof subcontractorSchema>;
