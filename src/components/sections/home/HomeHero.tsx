@@ -1,11 +1,33 @@
-import Link from "next/link";
-import { homeContent } from "@/content/home";
-import { company, contactLinks } from "@/content/company";
-import { ButtonLink } from "@/components/ui/ButtonLink";
+import { QuickContactForm } from "@/components/forms/QuickContactForm";
 import { Icon } from "@/components/ui/Icon";
-import { MediaFrame } from "@/components/ui/MediaFrame";
-import { StoreStatus } from "@/components/ui/StoreStatus";
+import { company, contactLinks } from "@/content/company";
 
 export function HomeHero() {
-  return <section className="hero-section"><div className="container hero-layout"><div className="hero-copy"><p className="eyebrow"><span aria-hidden="true" />{homeContent.hero.eyebrow}</p><h1>{homeContent.hero.title}</h1><p className="hero-lead">{homeContent.hero.lead}</p><div className="button-row"><ButtonLink href="#yhteydenotto">Kerro tarpeestasi</ButtonLink><ButtonLink href={contactLinks.phone} variant="secondary" icon="phone">Soita {company.phoneDisplay}</ButtonLink></div><nav className="hero-paths" aria-label="Nopeat palvelupolut"><Link href="/sahkoasennukset-ja-vikakorjaukset"><Icon name="bolt" /> Tarvitsen sähköasentajan <Icon name="arrow" /></Link><Link href="/valaisimien-korjaus"><Icon name="wrench" /> Haluan korjauttaa valaisimen <Icon name="arrow" /></Link><Link href="/myymala"><Icon name="store" /> Olen tulossa myymälään <Icon name="arrow" /></Link></nav></div><div className="hero-media"><MediaFrame priority requirement="Aito kuva sähköasentajasta tai valaisimen asennustilanteesta." fallbackTitle="Sähkö- ja valaisinosaamista Helsingissä" icon="bulb" ratio="4/3"/><aside className="hero-info-card"><StoreStatus /><strong>{company.address.street}</strong><span>{company.address.postalCode} {company.address.city}</span><a href={contactLinks.directions} target="_blank" rel="noreferrer">Avaa reittiohje <Icon name="arrow" /></a></aside></div></div></section>;
+  return (
+    <section className="conversion-hero">
+      <div className="container conversion-hero__layout">
+        <div className="conversion-hero__copy">
+          <p className="eyebrow"><span aria-hidden="true" />Sähköpalvelut Helsingissä</p>
+          <h1>Sähkötyöt nopeasti ja luotettavasti.</h1>
+          <p className="conversion-hero__lead">
+            Sähköasennukset, vikakorjaukset ja sähköalan palvelut koteihin, yrityksille ja taloyhtiöille Helsingissä ja lähialueilla.
+          </p>
+          <ul className="conversion-hero__points">
+            <li><Icon name="check" />Sähköasennukset ja korjaukset</li>
+            <li><Icon name="check" />Sähkövikojen selvittäminen</li>
+            <li><Icon name="check" />Kiireelliset sähkötyöt – saatavuus sovitaan puhelimitse</li>
+          </ul>
+          <div className="conversion-hero__links">
+            <a href={contactLinks.phone}>Soita {company.phoneDisplay}</a>
+            <a href={contactLinks.whatsapp} target="_blank" rel="noreferrer">Ota yhteyttä WhatsAppissa</a>
+          </div>
+        </div>
+        <aside className="quick-contact-card" aria-labelledby="home-contact-heading">
+          <h2 id="home-contact-heading">Tarvitsetko sähköasentajaa?</h2>
+          <p>Jätä yhteystietosi ja kerro lyhyesti, missä tarvitset apua. Palaamme asiaan.</p>
+          <QuickContactForm defaultTopic="electrical" />
+        </aside>
+      </div>
+    </section>
+  );
 }
