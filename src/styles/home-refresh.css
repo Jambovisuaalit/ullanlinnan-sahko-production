@@ -469,11 +469,14 @@
   color: var(--color-brand-black);
 }
 
-@media (min-width: 30rem) {
-  .why-us-grid {
+@media (min-width: 22rem) {
+  .quick-contact-form__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .quick-contact-form__grid,
+}
+
+@media (min-width: 30rem) {
+  .why-us-grid,
   .subcontractor-form__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -523,8 +526,13 @@
 }
 
 @media (max-width: 29.99rem) {
-  .quick-contact-form__field--wide,
   .subcontractor-form__field--wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 21.99rem) {
+  .quick-contact-form__field--wide {
     grid-column: auto;
   }
 }
