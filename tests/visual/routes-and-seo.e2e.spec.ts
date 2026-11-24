@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 const publicRoutes = [
-  { path: "/", heading: "Apua sähköihin, valaistukseen ja valaisimiin" },
+  { path: "/", heading: "Sähkötyöt nopeasti ja luotettavasti" },
   { path: "/yhteystiedot", heading: "Ota yhteyttä Ullanlinnan Sähköön" },
+  { path: "/alihankkijaksi", heading: "Oletko sähköalan ammattilainen?" },
+  { path: "/verkkokauppa", heading: "Valikoidut tuotteet Ullanlinnan Sähköltä" },
   { path: "/meista", heading: "Paikallinen sähkö- ja valaistusalan yritys Helsingissä" },
   { path: "/myymala", heading: "Sähkö- ja valaisintarvikemyymälä Ullanlinnassa" },
   { path: "/sahkoasennukset-ja-vikakorjaukset", heading: "Sähköasennukset ja vikakorjaukset" },
@@ -69,6 +71,8 @@ test.describe("public route smoke test", () => {
     expect(sitemapText).toContain("<urlset");
     expect(sitemapText).toContain("https://preview.invalid/");
     expect(sitemapText).toContain("/yhteystiedot");
+    expect(sitemapText).toContain("/alihankkijaksi");
+    expect(sitemapText).not.toContain("/verkkokauppa");
     expect(sitemapText).not.toContain("/tietosuojaseloste");
     expect(sitemapText).not.toContain("/evastekaytanto");
     expect(sitemapText).not.toContain("/saavutettavuusseloste");
@@ -76,6 +80,9 @@ test.describe("public route smoke test", () => {
     expect(sitemapText).not.toContain("/kiitos");
 
     await page.goto("/");
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+
+    await page.goto("/verkkokauppa");
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
   });
 });
