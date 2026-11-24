@@ -154,7 +154,7 @@ function EnabledQuickContactForm({ defaultTopic }: { defaultTopic: QuickContactF
 
       <div className="quick-contact-form__grid">
         <QuickField label="Mitä tarvitset?" id="quick-contact-topic" error={errors.topic?.message} wide>
-          <select id="quick-contact-topic" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? "quick-contact-topic-error" : undefined} {...register("topic")}>
+          <select id="quick-contact-topic" defaultValue={defaultTopic} aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? "quick-contact-topic-error" : undefined} {...register("topic")}>
             <option value="">Valitse työn tyyppi</option>
             {contactTopicOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
           </select>
