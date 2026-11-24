@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { contactTopicLabels, contactTopicOptions } from "@/content/contact";
 import { company, contactLinks } from "@/content/company";
-import { quickContactSchema, type QuickContactFields } from "@/lib/contact-schema";
+import { quickContactSchema, type QuickContactFields, type QuickContactFormInput } from "@/lib/contact-schema";
 
 type SubmissionResponse = {
   ok?: boolean;
@@ -44,7 +44,7 @@ function EnabledQuickContactForm({ defaultTopic }: { defaultTopic: QuickContactF
     reset,
     setValue,
     formState: { errors }
-  } = useForm<QuickContactFields>({
+  } = useForm<QuickContactFormInput, unknown, QuickContactFields>({
     resolver: zodResolver(quickContactSchema),
     defaultValues: {
       topic: defaultTopic,
