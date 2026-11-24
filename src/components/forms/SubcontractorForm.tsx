@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { company, contactLinks } from "@/content/company";
+import { contactLinks } from "@/content/company";
 import { subcontractorSchema, type SubcontractorFields } from "@/lib/subcontractor-schema";
 
 type SubmissionResponse = {
