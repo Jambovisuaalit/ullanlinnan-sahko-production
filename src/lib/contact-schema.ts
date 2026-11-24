@@ -28,4 +28,5 @@ export function validateFiles(files: readonly File[]) {
 export const quickContactSchema = contactSchema.extend({
   phone: z.string().trim().min(5, "Kirjoita puhelinnumero.").max(40)
 });
+export type QuickContactFormInput = z.input<typeof quickContactSchema>;
 export type QuickContactFields = z.output<typeof quickContactSchema>;
