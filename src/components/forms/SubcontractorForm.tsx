@@ -166,10 +166,10 @@ function EnabledSubcontractorForm() {
       </div>
 
       <label className="checkbox-field" htmlFor="partner-consent">
-        <input id="partner-consent" type="checkbox" aria-invalid={Boolean(errors.consent)} {...register("consent")} />
+        <input id="partner-consent" type="checkbox" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? "partner-consent-error" : undefined} {...register("consent")} />
         <span>Hyväksyn, että tietojani käsitellään alihankkijahakemuksen arviointia ja yhteydenottoa varten.</span>
       </label>
-      {errors.consent ? <p className="field-error">{errors.consent.message}</p> : null}
+      {errors.consent ? <p id="partner-consent-error" className="field-error">{errors.consent.message}</p> : null}
 
       <div className="honeypot" aria-hidden="true">
         <label htmlFor="partner-website">Verkkosivu</label>
@@ -205,7 +205,7 @@ function FormField({
       <label htmlFor={id}>{label} <span className="field-required" aria-hidden="true">*</span></label>
       {children}
       {help ? <p className="field-help">{help}</p> : null}
-      {error ? <p className="field-error">{error}</p> : null}
+      {error ? <p id={id + "-error"} className="field-error">{error}</p> : null}
     </div>
   );
 }
