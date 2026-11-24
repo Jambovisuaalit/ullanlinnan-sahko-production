@@ -137,31 +137,31 @@ function EnabledSubcontractorForm() {
 
       <div className="subcontractor-form__grid">
         <FormField label="Yrityksen nimi" id="partner-company" error={errors.companyName?.message}>
-          <input id="partner-company" autoComplete="organization" aria-invalid={Boolean(errors.companyName)} {...register("companyName")} />
+          <input id="partner-company" autoComplete="organization" aria-invalid={Boolean(errors.companyName)} aria-describedby={errors.companyName ? "partner-company-error" : undefined} {...register("companyName")} />
         </FormField>
         <FormField label="Y-tunnus" id="partner-business-id" error={errors.businessId?.message}>
-          <input id="partner-business-id" inputMode="numeric" placeholder="1234567-8" aria-invalid={Boolean(errors.businessId)} {...register("businessId")} />
+          <input id="partner-business-id" inputMode="numeric" placeholder="1234567-8" aria-invalid={Boolean(errors.businessId)} aria-describedby={errors.businessId ? "partner-business-id-error" : undefined} {...register("businessId")} />
         </FormField>
         <FormField label="Yhteyshenkilö" id="partner-contact" error={errors.contactName?.message}>
-          <input id="partner-contact" autoComplete="name" aria-invalid={Boolean(errors.contactName)} {...register("contactName")} />
+          <input id="partner-contact" autoComplete="name" aria-invalid={Boolean(errors.contactName)} aria-describedby={errors.contactName ? "partner-contact-error" : undefined} {...register("contactName")} />
         </FormField>
         <FormField label="Puhelinnumero" id="partner-phone" error={errors.phone?.message}>
-          <input id="partner-phone" type="tel" inputMode="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} {...register("phone")} />
+          <input id="partner-phone" type="tel" inputMode="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "partner-phone-error" : undefined} {...register("phone")} />
         </FormField>
         <FormField label="Sähköposti" id="partner-email" error={errors.email?.message} wide>
-          <input id="partner-email" type="email" inputMode="email" autoComplete="email" aria-invalid={Boolean(errors.email)} {...register("email")} />
+          <input id="partner-email" type="email" inputMode="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "partner-email-error" : undefined} {...register("email")} />
         </FormField>
         <FormField label="Sähköalan osaamisalueet" id="partner-expertise" error={errors.expertise?.message} wide help="Esimerkiksi sähköasennukset, vikakorjaukset, valaistus tai kiinteistöjen sähkötyöt.">
-          <textarea id="partner-expertise" rows={3} aria-invalid={Boolean(errors.expertise)} {...register("expertise")} />
+          <textarea id="partner-expertise" rows={3} aria-invalid={Boolean(errors.expertise)} aria-describedby={errors.expertise ? "partner-expertise-error" : undefined} {...register("expertise")} />
         </FormField>
         <FormField label="Toiminta-alue" id="partner-area" error={errors.coverageArea?.message} wide>
-          <input id="partner-area" placeholder="Esim. Helsinki ja pääkaupunkiseutu" aria-invalid={Boolean(errors.coverageArea)} {...register("coverageArea")} />
+          <input id="partner-area" placeholder="Esim. Helsinki ja pääkaupunkiseutu" aria-invalid={Boolean(errors.coverageArea)} aria-describedby={errors.coverageArea ? "partner-area-error" : undefined} {...register("coverageArea")} />
         </FormField>
         <FormField label="Luvat, pätevyydet ja vakuutukset" id="partner-qualifications" error={errors.qualifications?.message} wide>
-          <textarea id="partner-qualifications" rows={3} aria-invalid={Boolean(errors.qualifications)} {...register("qualifications")} />
+          <textarea id="partner-qualifications" rows={3} aria-invalid={Boolean(errors.qualifications)} aria-describedby={errors.qualifications ? "partner-qualifications-error" : undefined} {...register("qualifications")} />
         </FormField>
         <FormField label="Kerro yrityksestä ja toivotusta yhteistyöstä" id="partner-description" error={errors.description?.message} wide>
-          <textarea id="partner-description" rows={5} aria-invalid={Boolean(errors.description)} {...register("description")} />
+          <textarea id="partner-description" rows={5} aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "partner-description-error" : undefined} {...register("description")} />
         </FormField>
       </div>
 
