@@ -281,7 +281,10 @@
   gap: 1.5rem;
 }
 
-.subcontractor-promo .eyebrow,
+.subcontractor-promo .eyebrow {
+  color: var(--color-brand-paper);
+}
+
 .home-final-cta .eyebrow {
   color: var(--color-brand-gold);
 }
