@@ -1,9 +1,35 @@
-import { company } from "@/content/company";
+import { productCategories } from "@/content/store";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { MediaFrame } from "@/components/ui/MediaFrame";
+import { Icon } from "@/components/ui/Icon";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { StoreStatus } from "@/components/ui/StoreStatus";
 
 export function HomeStoreSection() {
-  return <section className="section"><div className="container store-layout split-layout--media-first"><div className="feature-copy"><SectionHeader eyebrow="Myymälä" title="Myymälä Pietarinkadulla" lead="Valaisimet, varaosat, valonlähteet, johdot ja muut sähkötarvikkeet."/><StoreStatus/><div className="notice-card"><strong>Saatavuus ei ole reaaliaikainen</strong><p>Varmista tietyn tuotteen tai valaisimen saatavuus ennen käyntiä.</p></div><p><strong>{company.address.street}</strong><br/>{company.address.postalCode} {company.address.city}<br/>{company.openingHours.display}</p><ButtonLink href="/myymala" icon="arrow">Katso myymälän tiedot</ButtonLink></div><MediaFrame requirement="Ajantasainen myymälän sisäkuva ilman vanhoja yhteystietoja." fallbackTitle="Sähkö- ja valaisintarvikemyymälä Ullanlinnassa" icon="store" ratio="4/3"/></div></section>;
+  return (
+    <section className="section shop-teaser">
+      <div className="container">
+        <SectionHeader
+          eyebrow="Verkkokauppa"
+          title="Valikoidut tuotteet Ullanlinnan Sähköltä"
+          lead="Myymälän tuotevalikoimaa tuodaan verkkoon vaiheittain. Tällä hetkellä voit tutustua tuoteryhmiin ja tiedustella yksittäisten tuotteiden saatavuutta."
+        />
+        <div className="shop-teaser__notice">
+          <strong>Verkkotilaus ja verkkomaksaminen eivät ole vielä käytössä.</strong>
+          <span>Tuotteiden nimet, hinnat, varastosaatavuus ja toimitustavat julkaistaan vasta, kun ne on vahvistettu.</span>
+        </div>
+        <div className="shop-category-grid">
+          {productCategories.slice(0, 4).map((category) => (
+            <article className="shop-category-card" key={category.id}>
+              <Icon name={category.id === "varaosat" ? "wrench" : "bulb"} />
+              <h2>{category.title}</h2>
+              <p>{category.text}</p>
+            </article>
+          ))}
+        </div>
+        <div className="button-row">
+          <ButtonLink href="/verkkokauppa" icon="arrow">Tutustu verkkokauppaan</ButtonLink>
+          <ButtonLink href="/myymala" variant="secondary">Myymälän tiedot</ButtonLink>
+        </div>
+      </div>
+    </section>
+  );
 }
