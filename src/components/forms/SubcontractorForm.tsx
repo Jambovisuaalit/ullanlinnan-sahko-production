@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { contactLinks } from "@/content/company";
-import { subcontractorSchema, type SubcontractorFields } from "@/lib/subcontractor-schema";
+import { subcontractorSchema, type SubcontractorFields, type SubcontractorFormInput } from "@/lib/subcontractor-schema";
 
 type SubmissionResponse = {
   ok?: boolean;
@@ -37,7 +37,7 @@ function EnabledSubcontractorForm() {
     reset,
     setValue,
     formState: { errors }
-  } = useForm<SubcontractorFields>({
+  } = useForm<SubcontractorFormInput, unknown, SubcontractorFields>({
     resolver: zodResolver(subcontractorSchema),
     defaultValues: {
       companyName: "",
