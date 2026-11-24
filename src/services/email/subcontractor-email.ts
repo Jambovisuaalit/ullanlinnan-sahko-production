@@ -60,7 +60,7 @@ export async function sendSubcontractorEmail(payload: SubcontractorFields) {
     from,
     to: recipient,
     replyTo: payload.email,
-    subject: "Uusi alihankkijahakemus: " + payload.companyName,
+    subject: "Uusi alihankkijahakemus",
     text,
     html,
     tags: [
