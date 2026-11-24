@@ -75,3 +75,49 @@ test("UI does not claim an ignored submission was sent", async ({ page }) => {
   await expect(page.getByText("Kiitos. Pyyntö on käsitelty.")).toBeVisible();
   await expect(page.getByText("Yhteydenotto lähetettiin", { exact: true })).not.toBeVisible();
 });
+
+
+test("homepage quick contact form submits successfully in preview mode", async ({ page }) => {
+  await page.goto("/");
+  await page.getByLabel("Mitä tarvitset?").selectOption("electrical");
+  await page.getByLabel("Nimi").fill("Testikäyttäjä");
+  await page.getByLabel("Puhelinnumero").fill("0401234567");
+  await page.getByLabel("Sähköposti").fill("test@example.com");
+  await page.getByLabel(/Hyväksyn, että tietojani käytetään/).check();
+
+  await page.waitForTimeout(1600);
+  const responsePromise = page.waitForResponse(
+    (response) => response.url().endsWith("/api/contact") && response.request().method() === "POST"
+  );
+  await page.getByRole("button", { name: "Pyydä yhteydenottoa" }).click();
+
+  const response = await responsePromise;
+  expect(response.status()).toBe(200);
+  await expect(response.json()).resolves.toMatchObject({ ok: true, mode: "demo" });
+  await expect(page.getByRole("heading", { name: "Esikatselutesti onnistui" })).toBeVisible();
+});
+
+test("subcontractor application submits successfully in preview mode", async ({ page }) => {
+  await page.goto("/alihankkijaksi");
+  await page.getByLabel("Yrityksen nimi").fill("Testi Sähkö Oy");
+  await page.getByLabel("Y-tunnus").fill("1234567-8");
+  await page.getByLabel("Yhteyshenkilö").fill("Testikäyttäjä");
+  await page.getByLabel("Puhelinnumero").fill("0401234567");
+  await page.getByLabel("Sähköposti").fill("test@example.com");
+  await page.getByLabel("Sähköalan osaamisalueet").fill("Sähköasennukset ja vikakorjaukset");
+  await page.getByLabel("Toiminta-alue").fill("Helsinki ja lähialueet");
+  await page.getByLabel("Luvat, pätevyydet ja vakuutukset").fill("Sähköalan pätevyydet ja voimassa olevat vastuuvakuutukset.");
+  await page.getByLabel("Kerro yrityksestä ja toivotusta yhteistyöstä").fill("Olemme pieni sähköalan yritys ja etsimme pitkäaikaista alihankintayhteistyötä.");
+  await page.getByLabel(/Hyväksyn, että tietojani käsitellään alihankkijahakemuksen/).check();
+
+  await page.waitForTimeout(1600);
+  const responsePromise = page.waitForResponse(
+    (response) => response.url().endsWith("/api/subcontractor") && response.request().method() === "POST"
+  );
+  await page.getByRole("button", { name: "Lähetä alihankkijahakemus" }).click();
+
+  const response = await responsePromise;
+  expect(response.status()).toBe(200);
+  await expect(response.json()).resolves.toMatchObject({ ok: true, mode: "demo" });
+  await expect(page.getByRole("heading", { name: "Esikatselutesti onnistui" })).toBeVisible();
+});
