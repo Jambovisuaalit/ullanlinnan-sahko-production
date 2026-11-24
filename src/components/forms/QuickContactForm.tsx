@@ -154,27 +154,27 @@ function EnabledQuickContactForm({ defaultTopic }: { defaultTopic: QuickContactF
 
       <div className="quick-contact-form__grid">
         <QuickField label="Mitä tarvitset?" id="quick-contact-topic" error={errors.topic?.message} wide>
-          <select id="quick-contact-topic" aria-invalid={Boolean(errors.topic)} {...register("topic")}>
+          <select id="quick-contact-topic" aria-invalid={Boolean(errors.topic)} aria-describedby={errors.topic ? "quick-contact-topic-error" : undefined} {...register("topic")}>
             <option value="">Valitse työn tyyppi</option>
             {contactTopicOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
           </select>
         </QuickField>
         <QuickField label="Nimi" id="quick-contact-name" error={errors.name?.message}>
-          <input id="quick-contact-name" autoComplete="name" aria-invalid={Boolean(errors.name)} {...register("name")} />
+          <input id="quick-contact-name" autoComplete="name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "quick-contact-name-error" : undefined} {...register("name")} />
         </QuickField>
         <QuickField label="Puhelinnumero" id="quick-contact-phone" error={errors.phone?.message}>
-          <input id="quick-contact-phone" type="tel" inputMode="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} {...register("phone")} />
+          <input id="quick-contact-phone" type="tel" inputMode="tel" autoComplete="tel" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "quick-contact-phone-error" : undefined} {...register("phone")} />
         </QuickField>
         <QuickField label="Sähköposti" id="quick-contact-email" error={errors.email?.message} wide>
-          <input id="quick-contact-email" type="email" inputMode="email" autoComplete="email" aria-invalid={Boolean(errors.email)} {...register("email")} />
+          <input id="quick-contact-email" type="email" inputMode="email" autoComplete="email" aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "quick-contact-email-error" : undefined} {...register("email")} />
         </QuickField>
       </div>
 
       <label className="checkbox-field" htmlFor="quick-contact-consent">
-        <input id="quick-contact-consent" type="checkbox" aria-invalid={Boolean(errors.consent)} {...register("consent")} />
+        <input id="quick-contact-consent" type="checkbox" aria-invalid={Boolean(errors.consent)} aria-describedby={errors.consent ? "quick-contact-consent-error" : undefined} {...register("consent")} />
         <span>Hyväksyn, että tietojani käytetään yhteydenottooni vastaamiseen.</span>
       </label>
-      {errors.consent ? <p className="field-error">{errors.consent.message}</p> : null}
+      {errors.consent ? <p id="quick-contact-consent-error" className="field-error">{errors.consent.message}</p> : null}
 
       <div className="honeypot" aria-hidden="true">
         <label htmlFor="quick-contact-website">Verkkosivu</label>
@@ -208,7 +208,7 @@ function QuickField({
     <div className={wide ? "field quick-contact-form__field--wide" : "field"}>
       <label htmlFor={id}>{label} <span className="field-required" aria-hidden="true">*</span></label>
       {children}
-      {error ? <p className="field-error">{error}</p> : null}
+      {error ? <p id={id + "-error"} className="field-error">{error}</p> : null}
     </div>
   );
 }
