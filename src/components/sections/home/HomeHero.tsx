@@ -12,6 +12,13 @@ export function HomeHero() {
           <p className="conversion-hero__lead">
             Sähköasennukset, vikakorjaukset ja sähköalan palvelut koteihin, yrityksille ja taloyhtiöille Helsingissä ja lähialueilla.
           </p>
+        </div>
+        <aside className="quick-contact-card" aria-labelledby="home-contact-heading">
+          <h2 id="home-contact-heading">Tarvitsetko sähköasentajaa?</h2>
+          <p>Jätä yhteystietosi ja kerro lyhyesti, missä tarvitset apua. Palaamme asiaan.</p>
+          <QuickContactForm defaultTopic="electrical" />
+        </aside>
+        <div className="conversion-hero__details">
           <ul className="conversion-hero__points">
             <li><Icon name="check" />Sähköasennukset ja korjaukset</li>
             <li><Icon name="check" />Sähkövikojen selvittäminen</li>
@@ -22,11 +29,6 @@ export function HomeHero() {
             <a href={contactLinks.whatsapp} target="_blank" rel="noreferrer">Ota yhteyttä WhatsAppissa</a>
           </div>
         </div>
-        <aside className="quick-contact-card" aria-labelledby="home-contact-heading">
-          <h2 id="home-contact-heading">Tarvitsetko sähköasentajaa?</h2>
-          <p>Jätä yhteystietosi ja kerro lyhyesti, missä tarvitset apua. Palaamme asiaan.</p>
-          <QuickContactForm defaultTopic="electrical" />
-        </aside>
       </div>
     </section>
   );
