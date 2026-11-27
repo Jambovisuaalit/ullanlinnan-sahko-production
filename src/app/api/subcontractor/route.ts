@@ -15,6 +15,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, code: "contact_form_disabled" }, { status: 410 });
     }
 
+    // Never send real submissions before the legal content is approved.
+    // A misconfigured production deployment must not report demo success.
+    if (process.env.VERCEL_ENV === "production" && process.env.CONTACT_FORM_DEMO_MODE === "true") {
+      return NextResponse.json({ ok: false, code: "transport_not_configured" }, { status: 503 });
+    }
+    if (!isDemoMode() && process.env.NEXT_PUBLIC_LEGAL_CONTENT_APPROVED !== "true") {
+      return NextResponse.json({ ok: false, code: "contact_form_disabled" }, { status: 410 });
+    }
+
     const contentLength = Number(request.headers.get("content-length") ?? 0);
     if (contentLength > 64 * 1024) {
       return NextResponse.json({ ok: false, code: "payload_too_large" }, { status: 413 });

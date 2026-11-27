@@ -121,3 +121,43 @@ test("subcontractor application submits successfully in preview mode", async ({ 
   await expect(response.json()).resolves.toMatchObject({ ok: true, mode: "demo" });
   await expect(page.getByRole("heading", { name: "Esikatselutesti onnistui" })).toBeVisible();
 });
+
+
+test("quick contact does not claim success for a malformed HTTP 200 response", async ({ page }) => {
+  await page.route("**/api/contact", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true, mode: "live" })
+    });
+  });
+  await page.goto("/");
+  await page.getByLabel("Mitä tarvitset?").selectOption("electrical");
+  await page.getByLabel("Nimi").fill("Testikäyttäjä");
+  await page.getByLabel("Puhelinnumero").fill("0401234567");
+  await page.getByLabel("Sähköposti").fill("test@example.com");
+  await page.getByLabel(/Hyväksyn, että tietojani käytetään/).check();
+  await page.getByRole("button", { name: "Pyydä yhteydenottoa" }).click();
+  await expect(page.getByRole("alert")).toContainText("Yhteydenotto ei onnistunut");
+  await expect(page.getByRole("heading", { name: "Yhteydenottopyyntö lähetettiin" })).not.toBeVisible();
+});
+
+test("contact API rejects missing acknowledgement", async ({ request }) => {
+  const response = await request.post("/api/contact", {
+    multipart: {
+      variant: "quick", topic: "electrical", name: "Testikäyttäjä",
+      email: "test@example.com", phone: "0401234567", message: "Testiyhteydenotto",
+      consent: "false", startedAt: String(Date.now() - 2000)
+    }
+  });
+  expect(response.status()).toBe(400);
+  await expect(response.json()).resolves.toMatchObject({ ok: false, code: "invalid_form" });
+});
+
+test("subcontractor API rejects an incomplete application", async ({ request }) => {
+  const response = await request.post("/api/subcontractor", {
+    multipart: { companyName: "Testiyritys", consent: "true", startedAt: String(Date.now() - 2000) }
+  });
+  expect(response.status()).toBe(400);
+  await expect(response.json()).resolves.toMatchObject({ ok: false, code: "invalid_form" });
+});

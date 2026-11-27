@@ -95,6 +95,13 @@ function EnabledSubcontractorForm() {
       const response = await fetch("/api/subcontractor", { method: "POST", body });
       const result = (await response.json().catch(() => ({}))) as SubmissionResponse;
       if (!response.ok) throw new Error(result.code || "submission_failed");
+      if (
+        result.ok !== true ||
+        !["live", "demo", "ignored"].includes(result.mode ?? "") ||
+        (result.mode === "live" && !result.reference)
+      ) {
+        throw new Error("submission_failed");
+      }
       setSubmission(result);
       setStatus("success");
     } catch (error) {
