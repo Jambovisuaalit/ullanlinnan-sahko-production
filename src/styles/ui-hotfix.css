@@ -24,8 +24,8 @@ h1 { max-width: none; line-height: 1.1; }
 }
 .hero-copy, .feature-copy, .service-hero__copy { min-width: 0; }
 .hero-copy .button-row { gap: .65rem; }
-.hero-copy .button-row > .button { min-height: 3rem; }
-.button { min-height: 2.75rem; max-width: 100%; white-space: normal; text-align: center; }
+.hero-copy .button-row > .button { min-height: 3.25rem; }
+.button { max-width: 100%; white-space: normal; text-align: center; }
 .button--whatsapp, .floating-whatsapp {
   background: #176b3a;
   color: #fff;
@@ -34,6 +34,7 @@ h1 { max-width: none; line-height: 1.1; }
 .button--whatsapp:hover, .floating-whatsapp:hover { background: #10542d; color: #fff; }
 .hero-media { display: grid; gap: 0; align-content: center; }
 .hero-media .media-frame, .service-hero__layout .media-frame { min-height: 0; }
+.media-illustration img { object-fit: contain; transform: none; }
 .hero-info-card { position: relative; inset: auto; width: 100%; margin: 0; box-shadow: none; }
 .service-grid, .conversion-service-grid, .shop-category-grid { align-items: stretch; }
 .service-card, .conversion-service-card, .shop-category-card { min-width: 0; height: 100%; }
