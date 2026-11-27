@@ -79,3 +79,23 @@ test.describe("public route smoke test", () => {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
   });
 });
+
+
+test("contact shortcuts and layout fit common viewport widths", async ({ page }) => {
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const heading = page.locator("h1").first();
+    await expect(heading).toBeVisible();
+    await expect(heading).toHaveCSS("overflow-wrap", "normal");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+    const whatsapp = width < 768 ? page.locator(".mobile-action-bar a[href^='https://wa.me/']") : page.locator(".floating-whatsapp");
+    await expect(whatsapp).toBeVisible();
+    await expect(whatsapp).toHaveAttribute("href", /^https:\/\/wa\.me\/358405743094(?:\?|$)/);
+    const bounds = await whatsapp.boundingBox();
+    expect(bounds?.height ?? 0).toBeGreaterThanOrEqual(44);
+    expect(bounds?.x ?? -1).toBeGreaterThanOrEqual(0);
+    expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(width + 1);
+  }
+});
