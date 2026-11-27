@@ -13,5 +13,6 @@ export const company = {
 export const contactLinks = {
   phone: `tel:${company.phoneE164}`,
   email: `mailto:${company.email}`,
+  whatsapp: `https://wa.me/${company.phoneE164.slice(1)}`,
   directions: "https://www.google.com/maps/dir/?api=1&destination=Pietarinkatu+21%2C+00150+Helsinki"
 } as const;

@@ -4,6 +4,7 @@ import "@fontsource/libre-baskerville/400.css";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { AnalyticsConsent } from "@/components/analytics/AnalyticsConsent";
 import { JsonLdScript } from "@/components/ui/JsonLd";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <Footer />
         <MobileActionBar />
+        <FloatingWhatsApp />
         {analyticsEnabled && measurementId ? <AnalyticsConsent measurementId={measurementId} /> : null}
         <JsonLdScript data={localBusinessSchema()} />
         <JsonLdScript data={websiteSchema()} />

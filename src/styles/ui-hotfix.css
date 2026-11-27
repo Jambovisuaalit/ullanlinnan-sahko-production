@@ -1,0 +1,78 @@
+/* Shared layout and contact hotfix. Keep brand tokens and existing content. */
+h1, h2, h3, h4 {
+  max-inline-size: 100%;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: auto;
+  text-wrap: balance;
+}
+h1 { max-width: none; line-height: 1.1; }
+.hero-copy h1, .service-hero__copy h1, .conversion-hero__copy h1,
+.subcontractor-page__copy h1, .storefront-page h1 {
+  max-width: none;
+  font-size: clamp(2rem, 1.25rem + 2.7vw, 3.85rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: auto;
+}
+.section { padding-block: clamp(2.75rem, 5vw, 4.75rem); }
+.hero-section, .service-hero { padding-block: clamp(2rem, 4.5vw, 4rem); }
+.hero-layout, .service-hero__layout, .split-layout, .store-layout, .location-layout {
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+}
+.hero-copy, .feature-copy, .service-hero__copy { min-width: 0; }
+.hero-copy .button-row { gap: .65rem; }
+.hero-copy .button-row > .button { min-height: 3rem; }
+.button { min-height: 2.75rem; max-width: 100%; white-space: normal; text-align: center; }
+.button--whatsapp, .floating-whatsapp {
+  background: #176b3a;
+  color: #fff;
+  border: 1px solid #176b3a;
+}
+.button--whatsapp:hover, .floating-whatsapp:hover { background: #10542d; color: #fff; }
+.hero-media { display: grid; gap: 0; align-content: center; }
+.hero-media .media-frame, .service-hero__layout .media-frame { min-height: 0; }
+.hero-info-card { position: relative; inset: auto; width: 100%; margin: 0; box-shadow: none; }
+.service-grid, .conversion-service-grid, .shop-category-grid { align-items: stretch; }
+.service-card, .conversion-service-card, .shop-category-card { min-width: 0; height: 100%; }
+.conversion-service-card { grid-template-rows: auto auto auto 1fr auto; }
+.process-grid--three { grid-template-columns: minmax(0, 1fr); }
+.floating-whatsapp {
+  position: fixed; right: max(1.5rem, env(safe-area-inset-right));
+  bottom: max(1.5rem, env(safe-area-inset-bottom)); z-index: 180;
+  display: none; align-items: center; gap: .55rem; padding: .8rem 1.1rem;
+  min-height: 3.25rem; border-radius: 999px; box-shadow: var(--shadow-default);
+  font-size: .95rem; font-weight: 750; text-decoration: none;
+}
+.floating-whatsapp svg { flex: 0 0 24px; }
+body:has(.analytics-consent) .floating-whatsapp { visibility: hidden; }
+@media (min-width: 48rem) {
+  .floating-whatsapp { display: inline-flex; }
+  .process-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  body:has(.floating-whatsapp) .site-footer { padding-bottom: 4.5rem; }
+}
+@media (min-width: 64rem) {
+  .hero-layout, .service-hero__layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hero-info-card { grid-template-columns: 1fr 1fr; align-items: center; }
+}
+@media (max-width: 47.99rem) {
+  .hero-media { display: none; }
+  body:has(.mobile-action-bar), body:has(.hero-section) {
+    padding-bottom: calc(var(--mobile-action-height) + env(safe-area-inset-bottom));
+  }
+  body:has(.hero-section) .mobile-action-bar { display: grid !important; }
+  .mobile-action-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mobile-action-bar a { padding-inline: .25rem; gap: .25rem; font-size: .78rem; }
+  .mobile-action-bar a:nth-child(2) { background: #176b3a; color: #fff; }
+  .mobile-action-bar a > svg { width: 1rem !important; min-width: 1rem; height: 1rem !important; flex-basis: 1rem; }
+  .mobile-action-bar a > span:not(.sr-only) { white-space: normal; overflow: visible; }
+  body[data-scroll-lock="true"] .mobile-action-bar { visibility: hidden; }
+  body:not(:has(.hero-section)) .site-footer { padding-bottom: 2rem; }
+}
+@media (max-width: 35rem) {
+  .hero-copy .button-row { display: grid; grid-template-columns: 1fr; }
+  .hero-copy .button-row > .button { width: 100%; justify-content: center; }
+}
+@media print { .floating-whatsapp { display: none !important; } }
