@@ -1,0 +1,570 @@
+/* Conversion-focused homepage refresh. Uses the approved Ullanlinna brand tokens. */
+
+.conversion-hero {
+  padding-block: clamp(1.5rem, 4vw, 4rem);
+  background: var(--color-bg-secondary);
+  overflow: clip;
+}
+
+.conversion-hero__layout {
+  display: grid;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 3rem);
+}
+
+.conversion-hero__copy {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+}
+
+.conversion-hero__details {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.conversion-hero__copy h1 {
+  max-width: 10ch;
+  font-size: clamp(2.45rem, 4.5vw, 4.8rem);
+  line-height: 0.99;
+}
+
+.conversion-hero__lead {
+  max-width: 54ch;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+  line-height: 1.6;
+}
+
+.conversion-hero__points {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.conversion-hero__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.94rem;
+  font-weight: 650;
+}
+
+.conversion-hero__points svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  color: var(--color-brand-olive);
+}
+
+.conversion-hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+}
+
+.conversion-hero__links a {
+  font-weight: 750;
+  text-underline-offset: 0.2em;
+}
+
+.quick-contact-card {
+  min-width: 0;
+  padding: clamp(1rem, 2.2vw, 1.75rem);
+  border: 1px solid var(--color-border-soft);
+  border-top: 4px solid var(--color-brand-gold);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-elevated);
+}
+
+.quick-contact-card h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.55rem, 2.3vw, 2.15rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.quick-contact-card > p {
+  margin: 0 0 1.25rem;
+  color: var(--color-text-secondary);
+  font-size: 0.94rem;
+}
+
+.quick-contact-form__grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.quick-contact-form__field--wide {
+  grid-column: 1 / -1;
+}
+
+.quick-contact-form .field {
+  gap: 0.35rem;
+}
+
+.quick-contact-form .field input,
+.quick-contact-form .field select {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.quick-contact-form .checkbox-field {
+  margin-top: 0.85rem;
+  font-size: 0.82rem;
+}
+
+.quick-contact-form .button--submit {
+  margin-top: 0.85rem;
+}
+
+.quick-contact-form .form-footnote {
+  margin-top: 0.65rem;
+  font-size: 0.75rem;
+}
+
+.quick-contact-form__fallback {
+  display: grid;
+  gap: 1rem;
+}
+
+.quick-contact-form__fallback p {
+  margin: 0;
+}
+
+.quick-contact-form__email {
+  width: fit-content;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.conversion-services {
+  scroll-margin-top: 7rem;
+}
+
+.conversion-service-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.conversion-service-card {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  padding: clamp(1.2rem, 2vw, 1.65rem);
+  border: 1px solid var(--color-border-soft);
+  border-top: 3px solid var(--color-brand-gold);
+  background: var(--color-surface);
+}
+
+.conversion-service-card__number {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.conversion-service-card > svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  color: var(--color-brand-olive);
+}
+
+.conversion-service-card h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 1.5vw, 1.6rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.conversion-service-card p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+}
+
+.conversion-service-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+.conversion-service-card a svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.shop-teaser {
+  background: var(--color-bg-secondary);
+}
+
+.shop-teaser__notice,
+.storefront-status {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.15rem;
+  border-left: 3px solid var(--color-brand-olive);
+  background: var(--color-surface);
+}
+
+.shop-teaser__notice span,
+.storefront-status span {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.shop-category-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.shop-category-card {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 1.2rem;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+}
+
+.shop-category-card > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-brand-olive);
+}
+
+.shop-category-card h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.shop-category-card p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.shop-category-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-weight: 750;
+}
+
+.shop-category-card a svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.subcontractor-promo {
+  background: var(--color-brand-olive);
+  color: var(--color-brand-paper);
+}
+
+.subcontractor-promo__layout,
+.home-final-cta__layout {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.subcontractor-promo .eyebrow {
+  color: var(--color-brand-paper);
+}
+
+.home-final-cta .eyebrow {
+  color: var(--color-brand-gold);
+}
+
+.subcontractor-promo h2,
+.home-final-cta h2 {
+  max-width: 17ch;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  font-weight: 400;
+  line-height: 1.12;
+}
+
+.subcontractor-promo p,
+.home-final-cta p {
+  max-width: 55ch;
+  margin: 0;
+}
+
+.subcontractor-promo .button {
+  justify-self: start;
+}
+
+.subcontractor-page {
+  background: var(--color-bg-secondary);
+}
+
+.subcontractor-page__layout {
+  display: grid;
+  align-items: start;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.subcontractor-page__copy {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.subcontractor-page__copy h1,
+.storefront-page h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4.4rem);
+  line-height: 1.02;
+}
+
+.subcontractor-benefits {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.subcontractor-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.subcontractor-benefits svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  margin-top: 0.25rem;
+  color: var(--color-brand-olive);
+}
+
+.subcontractor-page__note {
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border-soft);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.subcontractor-form-card {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.75rem);
+  border-top: 4px solid var(--color-brand-gold);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-default);
+}
+
+.subcontractor-form-card h2 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 400;
+}
+
+.subcontractor-form-card > p:not(.eyebrow) {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.subcontractor-form__grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.subcontractor-form__field--wide {
+  grid-column: 1 / -1;
+}
+
+.subcontractor-form .field input,
+.subcontractor-form .field textarea {
+  width: 100%;
+}
+
+.subcontractor-form__fallback {
+  display: grid;
+  gap: 1rem;
+}
+
+.subcontractor-form__fallback p {
+  margin: 0;
+}
+
+.storefront-page {
+  background: var(--color-bg-secondary);
+}
+
+.storefront-page__intro {
+  display: grid;
+  gap: 1rem;
+}
+
+.storefront-page .storefront-status {
+  max-width: 46rem;
+  margin: 0.5rem 0;
+}
+
+.storefront-page .button-row {
+  margin-top: 0.25rem;
+}
+
+.home-final-cta {
+  background: var(--color-brand-black);
+  color: var(--color-brand-paper);
+}
+
+.home-final-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.home-final-cta__actions .button--secondary {
+  border-color: rgb(251 249 245 / 55%);
+  color: var(--color-brand-paper);
+}
+
+.home-final-cta__actions .button--secondary:hover {
+  background: rgb(251 249 245 / 10%);
+}
+
+.mobile-action-bar {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mobile-action-bar a {
+  gap: 0.35rem;
+  padding-inline: 0.35rem;
+  font-size: 0.8rem;
+}
+
+.mobile-action-bar a:nth-child(2) {
+  background: var(--color-brand-olive);
+  color: var(--color-brand-paper);
+}
+
+.mobile-action-bar a:nth-child(3) {
+  background: var(--color-brand-gold);
+  color: var(--color-brand-black);
+}
+
+@media (min-width: 22rem) {
+  .quick-contact-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 30rem) {
+  .why-us-grid,
+  .subcontractor-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .conversion-hero__layout {
+    grid-template-columns: minmax(0, 1.05fr) minmax(25rem, 0.95fr);
+  }
+
+  .conversion-hero__copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .quick-contact-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+
+  .conversion-hero__details {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .conversion-hero__points {
+    gap: 0.45rem;
+  }
+
+  .conversion-service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .shop-category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .subcontractor-promo__layout,
+  .home-final-cta__layout {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .subcontractor-page__layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(28rem, 1.1fr);
+  }
+}
+
+@media (max-width: 29.99rem) {
+  .subcontractor-form__field--wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 21.99rem) {
+  .quick-contact-form__field--wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .mobile-action-bar a {
+    font-size: 0.72rem;
+    gap: 0.2rem;
+  }
+}
+
+.why-us-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.85rem;
+  margin-block: 1.25rem;
+}
+
+.why-us-grid article {
+  padding: 0.85rem;
+  border-left: 2px solid var(--color-brand-gold);
+  background: var(--color-bg-secondary);
+}
+
+.why-us-grid h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.why-us-grid p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.84rem;
+}

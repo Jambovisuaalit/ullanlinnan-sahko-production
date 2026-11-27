@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { contactSchema, validateFiles } from "@/lib/contact-schema";
+import { contactSchema, quickContactSchema, validateFiles } from "@/lib/contact-schema";
 import { sendContactEmail } from "@/services/email/contact-email";
 
 export const runtime = "nodejs";
@@ -28,13 +28,23 @@ export async function POST(request: Request) {
     if (process.env.NEXT_PUBLIC_ENABLE_CONTACT_FORM !== "true") {
       return NextResponse.json({ ok: false, code: "contact_form_disabled" }, { status: 410 });
     }
+    // Never send real submissions before the legal content is approved.
+    // A misconfigured production deployment must not report demo success.
+    if (process.env.VERCEL_ENV === "production" && process.env.CONTACT_FORM_DEMO_MODE === "true") {
+      return NextResponse.json({ ok: false, code: "transport_not_configured" }, { status: 503 });
+    }
+    if (!isDemoMode() && process.env.NEXT_PUBLIC_LEGAL_CONTENT_APPROVED !== "true") {
+      return NextResponse.json({ ok: false, code: "contact_form_disabled" }, { status: 410 });
+    }
+
     const contentLength = Number(request.headers.get("content-length") ?? 0);
     if (contentLength > maxRequestBytes) {
       return NextResponse.json({ ok: false, code: "payload_too_large" }, { status: 413 });
     }
 
     const form = await request.formData();
-    const parsed = contactSchema.safeParse({
+    const schema = form.get("variant") === "quick" ? quickContactSchema : contactSchema;
+    const parsed = schema.safeParse({
       topic: form.get("topic"), name: form.get("name"), email: form.get("email"), phone: form.get("phone") || undefined,
       address: form.get("address") || undefined, message: form.get("message"), consent: form.get("consent") === "true",
       website: form.get("website") ?? "", startedAt: form.get("startedAt")

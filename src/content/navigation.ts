@@ -8,9 +8,11 @@ export const serviceNavigation = [
 ] as const satisfies readonly NavigationItem[];
 
 export const siteNavigation = [
+  { label: "Etusivu", href: "/" },
   { label: "Sähkötyöt", href: "/sahkoasennukset-ja-vikakorjaukset" },
-  { label: "Valaisimet", href: "/valaisimien-korjaus" },
-  { label: "Myymälä", href: "/myymala" },
-  { label: "Meistä", href: "/meista" },
+  { label: "Hälytys- ja vikatyöt", href: "/#vikatyot" },
+  { label: "Verkkokauppa", href: "/verkkokauppa" },
+  { label: "Valaisimien korjaus", href: "/valaisimien-korjaus" },
+  { label: "Alihankkijaksi", href: "/alihankkijaksi" },
   { label: "Yhteystiedot", href: "/yhteystiedot" }
 ] as const satisfies readonly NavigationItem[];

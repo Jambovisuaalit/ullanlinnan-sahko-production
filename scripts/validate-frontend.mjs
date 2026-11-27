@@ -35,6 +35,8 @@ const requiredRoutes = [
   "src/app/myymala/page.tsx",
   "src/app/meista/page.tsx",
   "src/app/yhteystiedot/page.tsx",
+  "src/app/alihankkijaksi/page.tsx",
+  "src/app/verkkokauppa/page.tsx",
   "src/app/not-found.tsx"
 ];
 
@@ -76,13 +78,13 @@ for (const file of sourceFiles.filter((item) => /\.tsx?$/.test(item))) {
 }
 
 const pageComposition = await readFile(path.join(root, "src/components/pages/HomePage.tsx"), "utf8");
-if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 8) {
+if ((pageComposition.match(/<Home[A-Z]/g) ?? []).length < 7) {
   errors.push("HomePage is not composed from reusable section components.");
 }
 
 const navigationSource = await readFile(path.join(root, "src/components/layout/SiteNavigation.tsx"), "utf8");
 for (const requirement of [
-  'const DESKTOP_MEDIA_QUERY = "(min-width: 68rem)"',
+  'const DESKTOP_MEDIA_QUERY = "(min-width: 80rem)"',
   'aria-label="Päänavigaatio"',
   "siteNavigation.map",
   "aria-expanded={drawerOpen}",
@@ -111,7 +113,7 @@ for (const retiredDesktopDropdownPattern of [
 }
 
 const navigationContent = await readFile(path.join(root, "src/content/navigation.ts"), "utf8");
-for (const label of ["Sähkötyöt", "Valaisimet", "Myymälä", "Meistä", "Yhteystiedot"]) {
+for (const label of ["Etusivu", "Sähkötyöt", "Hälytys- ja vikatyöt", "Verkkokauppa", "Valaisimien korjaus", "Alihankkijaksi", "Yhteystiedot"]) {
   if (!navigationContent.includes(`label: "${label}"`)) {
     errors.push(`Approved primary navigation is missing label: ${label}`);
   }
@@ -130,8 +132,8 @@ for (const requirement of [
   ".contact-layout",
   ".footer-grid",
   ".media-brand-panel",
-  "@media (max-width: 67.99rem)",
-  "@media (min-width: 68rem)"
+  "@media (max-width: 79.99rem)",
+  "@media (min-width: 80rem)"
 ]) {
   if (!componentsCss.includes(requirement)) {
     errors.push(`components.css is missing consolidated safeguard: ${requirement}`);
@@ -160,7 +162,8 @@ for (const requiredImport of [
   '@import "../styles/tokens.css";',
   '@import "../styles/base.css";',
   '@import "../styles/components.css";',
-  '@import "../styles/pages.css";'
+  '@import "../styles/pages.css";',
+  '@import "../styles/home-refresh.css";'
 ]) {
   if (!globalCss.includes(requiredImport)) errors.push(`globals.css is missing import: ${requiredImport}`);
 }

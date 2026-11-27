@@ -3,8 +3,8 @@ import type { ContactFields } from "@/lib/contact-schema";
 export const contactTopicOptions = [
   {
     value: "electrical",
-    label: "Sähköasennus tai sähkövika",
-    hint: "Kerro kohde, havainto ja mahdolliset aiemmat muutokset.",
+    label: "Sähkövika, kiireellinen työ tai sähköasennus",
+    hint: "Kerro kohde, havainto ja mahdolliset aiemmat muutokset. Kiireellisessä tilanteessa soita suoraan ja varmista saatavuus.",
     needsAddress: true
   },
   {

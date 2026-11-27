@@ -7,9 +7,10 @@ import { siteNavigation } from "@/content/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
-const DESKTOP_MEDIA_QUERY = "(min-width: 68rem)";
+const DESKTOP_MEDIA_QUERY = "(min-width: 80rem)";
 
 function isActive(pathname: string, href: string) {
+  if (href.includes("#")) return false;
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -114,8 +115,8 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
         {siteNavigation.map((item) => (
           <NavLink key={item.href} href={item.href} label={item.label} pathname={pathname} />
         ))}
-        <ButtonLink href="/yhteystiedot#yhteydenotto" className="header-cta">
-          Ota yhteyttä
+        <ButtonLink href="/#yhteydenotto" className="header-cta">
+          Pyydä apua
         </ButtonLink>
       </nav>
 
@@ -174,8 +175,8 @@ function SiteNavigationState({ pathname }: { pathname: string }) {
             </nav>
 
             <div className="mobile-drawer__actions">
-              <ButtonLink href="/yhteystiedot#yhteydenotto" className="button--full">
-                Ota yhteyttä
+              <ButtonLink href="/#yhteydenotto" className="button--full">
+                Pyydä apua
               </ButtonLink>
             </div>
           </div>
